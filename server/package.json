@@ -18,7 +18,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "seed": "esbuild prisma/seed.ts --outfile=node_modules/tmp-seed.cjs --bundle --format=cjs --external:prisma --external:@prisma/client && node node_modules/tmp-seed.cjs --preview-feature"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.0.19",
@@ -26,7 +30,9 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/graphql": "^10.0.21",
     "@nestjs/platform-express": "^9.0.0",
+    "@prisma/client": "^4.1.1",
     "apollo-server-express": "^3.10.0",
+    "esbuild": "^0.14.53",
     "graphql": "^16.5.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
@@ -47,13 +53,14 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "28.1.2",
     "prettier": "^2.3.2",
+    "prisma": "^4.1.1",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",
     "ts-jest": "28.0.5",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.0.0",
-    "typescript": "^4.3.5"
+    "typescript": "^4.7.4"
   },
   "jest": {
     "moduleFileExtensions": [
