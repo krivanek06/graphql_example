@@ -5,11 +5,11 @@ export class Movie {
   @Field(() => Int)
   id: number;
 
-  @Field(() => String)
-  createdAt: string;
+  @Field(() => Date)
+  createdAt: Date;
 
-  @Field(() => String)
-  updatedAt: string;
+  @Field(() => Date)
+  updatedAt: Date;
 
   @Field(() => String, {
     nullable: false,
