@@ -4,29 +4,29 @@ import { MovieComment } from './movie-comment.model';
 
 @Injectable()
 export class MovieCommentService {
-  constructor(private prisma: PrismaService) {}
+	constructor(private prisma: PrismaService) {}
 
-  async getAllMovieCommetsByMovieId(movieId: number): Promise<MovieComment[]> {
-    return this.prisma.movieComment.findMany({
-      where: {
-        movieId,
-      },
-    });
-  }
+	async getAllMovieCommetsByMovieId(movieId: number): Promise<MovieComment[]> {
+		return this.prisma.movieComment.findMany({
+			where: {
+				movieId,
+			},
+		});
+	}
 
-  async getMovieCommetById(id: number): Promise<MovieComment> {
-    return this.prisma.movieComment.findUniqueOrThrow({
-      where: {
-        id,
-      },
-    });
-  }
+	async getMovieCommetById(id: number): Promise<MovieComment> {
+		return this.prisma.movieComment.findUniqueOrThrow({
+			where: {
+				id,
+			},
+		});
+	}
 
-  getAllMovieCommentsByUserId(userId: number): Promise<MovieComment[]> {
-    return this.prisma.movieComment.findMany({
-      where: {
-        userId,
-      },
-    });
-  }
+	getAllMovieCommentsByUserId(userId: number): Promise<MovieComment[]> {
+		return this.prisma.movieComment.findMany({
+			where: {
+				userId,
+			},
+		});
+	}
 }

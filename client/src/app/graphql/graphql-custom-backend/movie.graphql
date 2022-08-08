@@ -1,0 +1,13 @@
+fragment Movie on Movie {
+	id
+	createdAt
+	updatedAt
+	title
+	description
+}
+
+query GetAllMovies {
+	getAllMovies {
+		...Movie
+	}
+}

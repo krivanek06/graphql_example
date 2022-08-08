@@ -1,0 +1,19 @@
+<div class="flex flex-row gap-4 p-1 px-3">
+	<!-- notification message -->
+	<div *ngIf="data.type === 'notification'" class="wrapper">
+		<mat-icon color="primary">notifications</mat-icon>
+		<span *ngIf="data.message"> {{ data.message }} </span>
+	</div>
+
+	<!-- success message -->
+	<div *ngIf="data.type === 'success'" class="wrapper">
+		<mat-icon color="accent">check_circle</mat-icon>
+		<span *ngIf="data.message"> {{ data.message }} </span>
+	</div>
+
+	<!-- error message -->
+	<div *ngIf="data.type === 'error'" class="wrapper">
+		<mat-icon color="warn">error</mat-icon>
+		<span *ngIf="data.message"> {{ data.message }} </span>
+	</div>
+</div>

@@ -10,17 +10,15 @@ import { GraphQLHelper } from './graphql.helper';
 import { GraphQLResolver } from './graphql.resolver';
 
 @Module({
-  imports: [
-    ConfigModule,
-    GraphQLModule.forRoot<ApolloDriverConfig>(
-      GraphQLHelper.getApolloDriverConfig(),
-    ),
-    // modules
-    MovieModule,
-    UserModule,
-    MovieCommentModule,
-    MovieCommentLikeModule,
-  ],
-  providers: [GraphQLResolver],
+	imports: [
+		ConfigModule,
+		GraphQLModule.forRoot<ApolloDriverConfig>(GraphQLHelper.getApolloDriverConfig()),
+		// modules
+		MovieModule,
+		UserModule,
+		MovieCommentModule,
+		MovieCommentLikeModule,
+	],
+	providers: [GraphQLResolver],
 })
 export class GraphQLBackendModule {}

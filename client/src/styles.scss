@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.g-custom-snack-bar {
+	background-color: #232439 !important;
+	color: #f6f6f7 !important;
+	border-radius: 10px !important;
+}

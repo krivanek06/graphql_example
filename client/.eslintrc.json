@@ -1,0 +1,144 @@
+{
+	"root": true,
+	"overrides": [
+		{
+			"files": ["*.ts"],
+			"parserOptions": {
+				"project": ["**/tsconfig.json"],
+				"createDefaultProgram": true
+			},
+			"extends": [
+				"plugin:@angular-eslint/recommended",
+				"plugin:@angular-eslint/template/process-inline-templates",
+				"plugin:@angular-eslint/recommended--extra",
+				"airbnb-typescript/base",
+				"plugin:prettier/recommended",
+				"plugin:ngrx/recommended"
+			],
+			"rules": {
+				"prefer-destructuring": "off",
+				"no-param-reassign": [
+					"error",
+					{
+						"props": false
+					}
+				],
+				"no-iterator": "off",
+				"no-lonely-if": "off",
+				"no-console": "off",
+				"no-restricted-syntax": "off",
+				"no-plusplus": [
+					"error",
+					{
+						"allowForLoopAfterthoughts": true
+					}
+				],
+				"class-methods-use-this": "off",
+				"no-underscore-dangle": "off",
+				"func-names": "off",
+				"prefer-arrow-callback": "off",
+				"prefer-arrow/prefer-arrow-functions": "off",
+				"import/prefer-default-export": "off",
+				"@typescript-eslint/dot-notation": "off",
+				"@typescript-eslint/lines-between-class-members": [
+					"error",
+					"always",
+					{
+						"exceptAfterSingleLine": true,
+						"exceptAfterOverload": true
+					}
+				],
+				"@angular-eslint/component-selector": [
+					"error",
+					{
+						"type": "element",
+						"prefix": "app",
+						"style": "kebab-case"
+					}
+				],
+				"@angular-eslint/directive-selector": [
+					"error",
+					{
+						"type": "attribute",
+						"prefix": "app",
+						"style": "camelCase"
+					}
+				],
+				"@typescript-eslint/member-ordering": [
+					"error",
+					{
+						"default": [
+							"signature",
+							"public-static-field",
+							"protected-static-field",
+							"private-static-field",
+							"public-decorated-field",
+							"protected-decorated-field",
+							"private-decorated-field",
+							"public-instance-field",
+							"protected-instance-field",
+							"private-instance-field",
+							"public-abstract-field",
+							"protected-abstract-field",
+							"private-abstract-field",
+							"public-field",
+							"protected-field",
+							"private-field",
+							"static-field",
+							"instance-field",
+							"abstract-field",
+							"decorated-field",
+							"field",
+							"public-constructor",
+							"protected-constructor",
+							"private-constructor",
+							"constructor",
+							"public-static-method",
+							"protected-static-method",
+							"private-static-method",
+							"public-decorated-method",
+							"protected-decorated-method",
+							"private-decorated-method",
+							"public-instance-method",
+							"protected-instance-method",
+							"private-instance-method",
+							"public-abstract-method",
+							"protected-abstract-method",
+							"private-abstract-method",
+							"public-method",
+							"protected-method",
+							"private-method",
+							"static-method",
+							"instance-method",
+							"abstract-method",
+							"decorated-method",
+							"method"
+						]
+					}
+				]
+			},
+			"plugins": ["ngrx", "import", "@nrwl/nx"]
+		},
+		{
+			"files": ["*.html"],
+			"parserOptions": {
+				"project": ["**/tsconfig.json"]
+			},
+			"extends": ["plugin:@angular-eslint/template/recommended", "plugin:prettier/recommended"],
+			"rules": {}
+		},
+		{
+			"files": ["*.ts", "*.tsx"],
+			"extends": ["plugin:@nrwl/nx/typescript"],
+			"rules": {}
+		},
+		{
+			"files": ["*.js", "*.jsx"],
+			"extends": ["plugin:@nrwl/nx/javascript"],
+			"rules": {
+				"dot-notation": "warn",
+				"@typescript-eslint/dot-notation": ["warn"]
+			}
+		}
+	]
+}
