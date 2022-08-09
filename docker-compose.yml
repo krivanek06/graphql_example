@@ -31,17 +31,17 @@ services:
       - pgadmin-data:/var/lib/pgadmin
     restart: unless-stopped
 
-  # graphql-api:
-  #   stdin_open: true
-  #   build:
-  #     context: ./server
-  #     dockerfile: Dockerfile
-  #   container_name: graphql-api
-  #   depends_on:
-  #     - postgres
-  #   ports:
-  #     - '3000:3000'
-  #   restart: always
+  graphql-api:
+    stdin_open: true
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: graphql-api
+    depends_on:
+      - postgres
+    ports:
+      - '3000:3000'
+    restart: always
 
 volumes:
   postgres-data:

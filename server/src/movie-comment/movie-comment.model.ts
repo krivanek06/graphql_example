@@ -12,6 +12,7 @@ export class MovieComment implements MovieCommentClient {
 	@Field(() => String, {
 		nullable: true,
 		description: 'Comment that was added',
+		defaultValue: '',
 	})
 	description: string;
 

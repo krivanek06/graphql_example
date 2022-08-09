@@ -13,7 +13,7 @@ datasource db {
 model Movie {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
-  description String?
+  description String?  @default("")
 
   updatedAt DateTime @default(now())
   title     String?
@@ -24,7 +24,7 @@ model Movie {
 model MovieComment {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
-  description String?
+  description String?  @default("")
 
   // user who liked the comment
   likedBy MovieCommentLike[]
@@ -54,7 +54,7 @@ model MovieCommentLike {
 model User {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
-  description String?
+  description String?  @default("")
   username    String
 
   MovieComment     MovieComment[]

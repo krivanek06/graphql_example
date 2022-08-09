@@ -15,6 +15,7 @@ export class Movie implements MovieClient {
 	@Field(() => String, {
 		nullable: false,
 		description: "User's title to the movie",
+		defaultValue: '',
 	})
 	title: string;
 

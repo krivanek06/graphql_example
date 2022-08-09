@@ -12,6 +12,7 @@ export class User implements UserClient {
 	@Field(() => String, {
 		nullable: true,
 		description: "Description to user's usernaem",
+		defaultValue: '',
 	})
 	description: string;
 
