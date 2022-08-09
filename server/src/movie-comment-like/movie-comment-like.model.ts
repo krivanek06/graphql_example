@@ -1,7 +1,8 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { MovieCommentLike as MovieCommentLikeClient } from '@prisma/client';
 
 @ObjectType()
-export class MovieCommentLike {
+export class MovieCommentLike implements MovieCommentLikeClient {
 	@Field(() => Int)
 	id: number;
 

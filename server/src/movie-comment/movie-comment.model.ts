@@ -1,7 +1,8 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { MovieComment as MovieCommentClient } from '@prisma/client';
 
 @ObjectType()
-export class MovieComment {
+export class MovieComment implements MovieCommentClient {
 	@Field(() => Int)
 	id: number;
 
@@ -12,7 +13,7 @@ export class MovieComment {
 		nullable: true,
 		description: 'Comment that was added',
 	})
-	description?: string;
+	description: string;
 
 	@Field(() => Number)
 	movieId: number;

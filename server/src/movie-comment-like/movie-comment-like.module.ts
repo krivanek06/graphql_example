@@ -6,8 +6,8 @@ import { MovieCommentLikeResolver } from './movie-comment-like.resolver';
 import { MovieCommentLikeService } from './movie-comment-like.service';
 
 @Module({
-  imports: [forwardRef(() => MovieCommentModule), forwardRef(() => UserModule)],
-  providers: [PrismaService, MovieCommentLikeService, MovieCommentLikeResolver],
-  exports: [MovieCommentLikeService, MovieCommentLikeResolver],
+	imports: [forwardRef(() => MovieCommentModule), forwardRef(() => UserModule)],
+	providers: [PrismaService, MovieCommentLikeService, MovieCommentLikeResolver],
+	exports: [MovieCommentLikeService, MovieCommentLikeResolver],
 })
 export class MovieCommentLikeModule {}

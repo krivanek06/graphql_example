@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { MovieCommentLike } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
-import { MovieCommentLike } from './movie-comment-like.model';
 
 @Injectable()
 export class MovieCommentLikeService {

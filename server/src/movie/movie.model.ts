@@ -1,7 +1,8 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Movie as MovieClient } from '@prisma/client';
 
 @ObjectType()
-export class Movie {
+export class Movie implements MovieClient {
 	@Field(() => Int)
 	id: number;
 
@@ -21,5 +22,5 @@ export class Movie {
 		nullable: true,
 		description: "User's description to the movie",
 	})
-	description?: string;
+	description: string;
 }
