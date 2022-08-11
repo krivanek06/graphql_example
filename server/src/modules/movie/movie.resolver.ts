@@ -1,4 +1,7 @@
-import { Args, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Inject } from '@nestjs/common';
+import { Args, Int, Mutation, Parent, Query, ResolveField, Resolver, Subscription } from '@nestjs/graphql';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
+import { PUB_SUB } from 'src/providers/redis/redisPubSub.module';
 import { MovieComment } from './../movie-comment/movie-comment.model';
 import { MovieCommentService } from './../movie-comment/movie-comment.service';
 import { MovieInput } from './movie.input';
@@ -7,7 +10,11 @@ import { MovieService } from './movie.service';
 
 @Resolver(() => Movie)
 export class MovieResolver {
-	constructor(private movieService: MovieService, private movieCommentService: MovieCommentService) {}
+	constructor(
+		private movieService: MovieService,
+		private movieCommentService: MovieCommentService,
+		@Inject(PUB_SUB) private pubSub: RedisPubSub
+	) {}
 
 	@Query(() => [Movie], {
 		description: 'we return multiple movies',
@@ -26,7 +33,14 @@ export class MovieResolver {
 
 	@Mutation(() => Movie)
 	async createMovie(@Args('movieInput') movieInput: MovieInput): Promise<Movie> {
-		return this.movieService.createMovie(movieInput);
+		const createdMovie = await this.movieService.createMovie(movieInput);
+		this.pubSub.publish('createdMovie', { createdMovie });
+		return createdMovie;
+	}
+
+	@Subscription(() => Movie)
+	createdMovie() {
+		return this.pubSub.asyncIterator('createdMovie');
 	}
 
 	@ResolveField('movieComment', () => [MovieComment])
