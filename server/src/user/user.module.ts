@@ -6,11 +6,8 @@ import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 
 @Module({
-  imports: [
-    forwardRef(() => MovieCommentModule),
-    forwardRef(() => MovieCommentLikeModule),
-  ],
-  providers: [PrismaService, UserService, UserResolver],
-  exports: [UserService, UserResolver],
+	imports: [forwardRef(() => MovieCommentModule), forwardRef(() => MovieCommentLikeModule)],
+	providers: [PrismaService, UserService, UserResolver],
+	exports: [UserService, UserResolver],
 })
 export class UserModule {}

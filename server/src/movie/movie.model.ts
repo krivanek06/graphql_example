@@ -1,9 +1,9 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Movie as MovieClient } from '@prisma/client';
 
 @ObjectType()
 export class Movie implements MovieClient {
-	@Field(() => Int)
+	@Field(() => ID)
 	id: number;
 
 	@Field(() => Date)

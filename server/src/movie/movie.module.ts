@@ -5,8 +5,8 @@ import { MovieResolver } from './movie.resolver';
 import { MovieService } from './movie.service';
 
 @Module({
-  imports: [forwardRef(() => MovieCommentModule)],
-  providers: [MovieResolver, MovieService, PrismaService],
-  exports: [MovieResolver, MovieService],
+	imports: [forwardRef(() => MovieCommentModule)],
+	providers: [MovieResolver, MovieService, PrismaService],
+	exports: [MovieResolver, MovieService],
 })
 export class MovieModule {}
