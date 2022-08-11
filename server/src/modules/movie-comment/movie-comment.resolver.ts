@@ -1,8 +1,8 @@
 import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { MovieCommentLike } from 'src/movie-comment-like/movie-comment-like.model';
-import { MovieCommentLikeService } from 'src/movie-comment-like/movie-comment-like.service';
-import { User } from 'src/user/user.model';
-import { UserService } from 'src/user/user.service';
+import { MovieCommentLike } from '../movie-comment-like/movie-comment-like.model';
+import { MovieCommentLikeService } from '../movie-comment-like/movie-comment-like.service';
+import { User } from '../user/user.model';
+import { UserService } from '../user/user.service';
 import { MovieComment } from './../movie-comment/movie-comment.model';
 import { MovieCommentInput } from './movie-comment.input';
 import { MovieCommentService } from './movie-comment.service';
