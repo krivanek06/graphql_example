@@ -1,9 +1,9 @@
 import * as faker from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
+import { MovieCommentLikeInput } from 'src/modules/movie-comment-like/movie-comment-like.input';
+import { MovieCommentInput } from 'src/modules/movie-comment/movie-comment.input';
 import { MovieInput } from 'src/modules/movie/movie.input';
-import { MovieCommentLikeInput } from 'src/movie-comment-like/movie-comment-like.input';
-import { MovieCommentInput } from 'src/movie-comment/movie-comment.input';
-import { UserInput } from 'src/user/user.input';
+import { UserInput } from 'src/modules/user/user.input';
 
 const prisma = new PrismaClient();
 const getRandomInt = (min: number, max: number) => {

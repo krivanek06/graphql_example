@@ -6,10 +6,10 @@ export class Movie implements MovieClient {
 	@Field(() => ID)
 	id: number;
 
-	@Field(() => Date)
+	@Field(() => String)
 	createdAt: Date;
 
-	@Field(() => Date)
+	@Field(() => String)
 	updatedAt: Date;
 
 	@Field(() => String, {

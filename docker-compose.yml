@@ -31,17 +31,31 @@ services:
       - pgadmin-data:/var/lib/pgadmin
     restart: unless-stopped
 
-  graphql-api:
-    stdin_open: true
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    container_name: graphql-api
-    depends_on:
-      - postgres
+  redis:
+    image: redis:6.2.6-alpine3.15
+    container_name: dashboard-redis
     ports:
-      - '3000:3000'
-    restart: always
+      - 6379:6379
+    command: ['redis-server', '--appendonly', 'yes']
+    restart: unless-stopped
+
+  # graphql-api:
+  #   stdin_open: true
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile
+  #   container_name: graphql-api
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   ports:
+  #     - '3000:3000'
+  #   restart: always
+  #   environment:
+  #     NODE_ENV: 'development'
+  #     REDIS_HOST: redis
+  #     REDIS_PORT: 6379
+  #     REDIS_URL: redis://redis:6379
 
 volumes:
   postgres-data:

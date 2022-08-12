@@ -6,7 +6,7 @@ export class MovieCommentLike implements MovieCommentLikeClient {
 	@Field(() => Int)
 	id: number;
 
-	@Field(() => Date)
+	@Field(() => String)
 	createdAt: Date;
 
 	@Field(() => Int, {

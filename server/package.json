@@ -25,6 +25,7 @@
 		"seed": "ts-node prisma/seed.ts"
 	},
 	"dependencies": {
+		"@liaoliaots/nestjs-redis": "^9.0.1",
 		"@nestjs/apollo": "^10.0.19",
 		"@nestjs/common": "^9.0.0",
 		"@nestjs/config": "^2.2.0",
@@ -36,6 +37,11 @@
 		"apollo-server-fastify": "^3.10.0",
 		"esbuild": "^0.14.53",
 		"graphql": "^16.5.0",
+		"graphql-redis-subscriptions": "^2.5.0",
+		"ioredis": "^5.2.2",
+		"nestjs-pino": "^3.1.1",
+		"pino-http": "^8.2.0",
+		"pino-pretty": "^9.0.0",
 		"reflect-metadata": "^0.1.13",
 		"rimraf": "^3.0.2",
 		"rxjs": "^7.2.0",
