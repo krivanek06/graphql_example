@@ -6,7 +6,7 @@ export class User implements UserClient {
 	@Field(() => Int)
 	id: number;
 
-	@Field(() => Date)
+	@Field(() => String)
 	createdAt: Date;
 
 	@Field(() => String, {
