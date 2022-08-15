@@ -4,7 +4,7 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { PUB_SUB } from 'src/providers/redis/redisPubSub.module';
 import { MovieComment } from './../movie-comment/movie-comment.model';
 import { MovieCommentService } from './../movie-comment/movie-comment.service';
-import { MovieInput } from './movie.input';
+import { MovieInputCreate, MovieInputEdit } from './movie.input';
 import { Movie } from './movie.model';
 import { MovieService } from './movie.service';
 
@@ -32,15 +32,39 @@ export class MovieResolver {
 	}
 
 	@Mutation(() => Movie)
-	async createMovie(@Args('movieInput') movieInput: MovieInput): Promise<Movie> {
-		const createdMovie = await this.movieService.createMovie(movieInput);
+	async createMovie(@Args('movieInputCreate') movieInputCreate: MovieInputCreate): Promise<Movie> {
+		const createdMovie = await this.movieService.createMovie(movieInputCreate);
 		this.pubSub.publish('createdMovie', { createdMovie });
 		return createdMovie;
+	}
+
+	@Mutation(() => Movie)
+	async editMovie(@Args('movieInputEdit') movieInputEdit: MovieInputEdit): Promise<Movie> {
+		const editedMovie = await this.movieService.editMovie(movieInputEdit);
+		this.pubSub.publish('editedMovie', { editedMovie });
+		return editedMovie;
+	}
+
+	@Mutation(() => Number)
+	async deleteMovie(@Args('movieId') movieId: number): Promise<number> {
+		await this.movieService.deleteMovie(movieId);
+		this.pubSub.publish('deletedMovie', { movieId });
+		return movieId;
 	}
 
 	@Subscription(() => Movie)
 	createdMovie() {
 		return this.pubSub.asyncIterator('createdMovie');
+	}
+
+	@Subscription(() => Movie)
+	editedMovie() {
+		return this.pubSub.asyncIterator('editedMovie');
+	}
+
+	@Subscription(() => Number)
+	deletedMovie() {
+		return this.pubSub.asyncIterator('deletedMovie');
 	}
 
 	@ResolveField('movieComment', () => [MovieComment])

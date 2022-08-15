@@ -2,7 +2,7 @@ import * as faker from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
 import { MovieCommentLikeInput } from 'src/modules/movie-comment-like/movie-comment-like.input';
 import { MovieCommentInput } from 'src/modules/movie-comment/movie-comment.input';
-import { MovieInput } from 'src/modules/movie/movie.input';
+import { MovieInputCreate } from 'src/modules/movie/movie.input';
 import { UserInput } from 'src/modules/user/user.input';
 
 const prisma = new PrismaClient();
@@ -19,7 +19,7 @@ const createManyMovies = async () => {
 
 	for (let i = 0; i < 100; i++) {
 		// create data
-		const movie: MovieInput = {
+		const movie: MovieInputCreate = {
 			title: faker.faker.name.findName(),
 			description: faker.faker.random.words(6),
 		};
