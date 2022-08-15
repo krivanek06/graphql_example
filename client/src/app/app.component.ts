@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SpaceXApiService } from './core/api/space-x-api.service';
 
 @Component({
 	selector: 'app-root',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-	constructor() {}
-	ngOnInit(): void {}
+	constructor(private SpaceXApiService: SpaceXApiService) {}
+	ngOnInit(): void {
+		this.SpaceXApiService.getLaunchesPast().subscribe(console.log);
+	}
 }

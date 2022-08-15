@@ -1320,36 +1320,35 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['uuid']>>;
 };
 
+export type LaunchLastFragment = { __typename?: 'Launch', mission_name?: string | null, launch_date_local?: any | null, launch_site?: { __typename?: 'LaunchSite', site_id?: string | null, site_name_long?: string | null, site_name?: string | null } | null, links?: { __typename?: 'LaunchLinks', video_link?: string | null, article_link?: string | null } | null };
+
 export type LaunchesPastQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LaunchesPastQuery = { __typename?: 'Query', launchesPast?: Array<{ __typename?: 'Launch', mission_name?: string | null, launch_date_local?: any | null, launch_site?: { __typename?: 'LaunchSite', site_id?: string | null, site_name_long?: string | null, site_name?: string | null } | null, links?: { __typename?: 'LaunchLinks', video_link?: string | null, article_link?: string | null } | null, rocket?: { __typename?: 'LaunchRocket', rocket_name?: string | null } | null, ships?: Array<{ __typename?: 'Ship', name?: string | null, home_port?: string | null, image?: string | null } | null> | null } | null> | null };
+export type LaunchesPastQuery = { __typename?: 'Query', launchesPast?: Array<{ __typename?: 'Launch', mission_name?: string | null, launch_date_local?: any | null, launch_site?: { __typename?: 'LaunchSite', site_id?: string | null, site_name_long?: string | null, site_name?: string | null } | null, links?: { __typename?: 'LaunchLinks', video_link?: string | null, article_link?: string | null } | null } | null> | null };
 
-export const LaunchesPastDocument = gql`
-    query LaunchesPast {
-  launchesPast(limit: 10) {
-    mission_name
-    launch_date_local
-    launch_site {
-      site_id
-      site_name_long
-      site_name
-    }
-    links {
-      video_link
-      article_link
-    }
-    rocket {
-      rocket_name
-    }
-    ships {
-      name
-      home_port
-      image
-    }
+export const LaunchLastFragmentDoc = gql`
+    fragment LaunchLast on Launch {
+  mission_name
+  launch_date_local
+  launch_site {
+    site_id
+    site_name_long
+    site_name
+  }
+  links {
+    video_link
+    article_link
   }
 }
     `;
+export const LaunchesPastDocument = gql`
+    query LaunchesPast {
+  launchesPast(limit: 10) {
+    ...LaunchLast
+  }
+}
+    ${LaunchLastFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
