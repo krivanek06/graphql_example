@@ -13,36 +13,44 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-  DateTime: any;
 };
 
 export type Movie = {
   __typename?: 'Movie';
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['String'];
   /** User's description to the movie */
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   movieComment: Array<MovieComment>;
   /** User's title to the movie */
   title: Scalars['String'];
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['String'];
 };
 
 export type MovieComment = {
   __typename?: 'MovieComment';
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['String'];
   /** Comment that was added */
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   likedBy: Array<MovieCommentLike>;
   movieId: Scalars['Float'];
+  user: User;
+  userId: Scalars['Float'];
+};
+
+export type MovieCommentInput = {
+  /** User's description */
+  description: Scalars['String'];
+  /** Movie which was commented */
+  movieId: Scalars['Float'];
+  /** User who wrote the comment */
   userId: Scalars['Float'];
 };
 
 export type MovieCommentLike = {
   __typename?: 'MovieCommentLike';
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['String'];
   id: Scalars['Int'];
   movieComment: MovieComment;
   /** Comment that was liked */
@@ -52,8 +60,52 @@ export type MovieCommentLike = {
   userId: Scalars['Int'];
 };
 
+export type MovieInputCreate = {
+  /** User's description to the movie */
+  description?: InputMaybe<Scalars['String']>;
+  /** User's title to the movie */
+  title: Scalars['String'];
+};
+
+export type MovieInputEdit = {
+  /** User's description to the movie */
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['Float'];
+  /** User's title to the movie */
+  title: Scalars['String'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createMovie: Movie;
+  createMovieComment: MovieComment;
+  deleteMovie: Scalars['Float'];
+  editMovie: Movie;
+};
+
+
+export type MutationCreateMovieArgs = {
+  movieInputCreate: MovieInputCreate;
+};
+
+
+export type MutationCreateMovieCommentArgs = {
+  movieCommentInput: MovieCommentInput;
+};
+
+
+export type MutationDeleteMovieArgs = {
+  movieId: Scalars['Int'];
+};
+
+
+export type MutationEditMovieArgs = {
+  movieInputEdit: MovieInputEdit;
+};
+
 export type Query = {
   __typename?: 'Query';
+  /** we return multiple movies */
   getAllMovies: Array<Movie>;
   getAllUsers: Array<User>;
   getMovieById: Movie;
@@ -71,9 +123,16 @@ export type QueryGetUserByIdArgs = {
   id: Scalars['Int'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  createdMovie: Movie;
+  deletedMovie: Scalars['Float'];
+  editedMovie: Movie;
+};
+
 export type User = {
   __typename?: 'User';
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['String'];
   /** Description to user's usernaem */
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
@@ -82,15 +141,36 @@ export type User = {
   username: Scalars['String'];
 };
 
-export type MovieFragment = { __typename?: 'Movie', id: number, createdAt: any, updatedAt: any, title: string, description?: string | null };
+export type MovieInfoFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null };
 
 export type GetAllMoviesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllMoviesQuery = { __typename?: 'Query', getAllMovies: Array<{ __typename?: 'Movie', id: number, createdAt: any, updatedAt: any, title: string, description?: string | null }> };
+export type GetAllMoviesQuery = { __typename?: 'Query', getAllMovies: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null }> };
 
-export const MovieFragmentDoc = gql`
-    fragment Movie on Movie {
+export type CreateMovieMutationVariables = Exact<{
+  movieInputCreate: MovieInputCreate;
+}>;
+
+
+export type CreateMovieMutation = { __typename?: 'Mutation', createMovie: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null } };
+
+export type EditMovieMutationVariables = Exact<{
+  movieInputEdit: MovieInputEdit;
+}>;
+
+
+export type EditMovieMutation = { __typename?: 'Mutation', editMovie: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null } };
+
+export type DeleteMovieMutationVariables = Exact<{
+  movieId: Scalars['Int'];
+}>;
+
+
+export type DeleteMovieMutation = { __typename?: 'Mutation', deleteMovie: number };
+
+export const MovieInfoFragmentDoc = gql`
+    fragment MovieInfo on Movie {
   id
   createdAt
   updatedAt
@@ -101,16 +181,68 @@ export const MovieFragmentDoc = gql`
 export const GetAllMoviesDocument = gql`
     query GetAllMovies {
   getAllMovies {
-    ...Movie
+    ...MovieInfo
   }
 }
-    ${MovieFragmentDoc}`;
+    ${MovieInfoFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
   })
   export class GetAllMoviesGQL extends Apollo.Query<GetAllMoviesQuery, GetAllMoviesQueryVariables> {
     override document = GetAllMoviesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CreateMovieDocument = gql`
+    mutation CreateMovie($movieInputCreate: MovieInputCreate!) {
+  createMovie(movieInputCreate: $movieInputCreate) {
+    ...MovieInfo
+  }
+}
+    ${MovieInfoFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateMovieGQL extends Apollo.Mutation<CreateMovieMutation, CreateMovieMutationVariables> {
+    override document = CreateMovieDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const EditMovieDocument = gql`
+    mutation EditMovie($movieInputEdit: MovieInputEdit!) {
+  editMovie(movieInputEdit: $movieInputEdit) {
+    ...MovieInfo
+  }
+}
+    ${MovieInfoFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class EditMovieGQL extends Apollo.Mutation<EditMovieMutation, EditMovieMutationVariables> {
+    override document = EditMovieDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteMovieDocument = gql`
+    mutation DeleteMovie($movieId: Int!) {
+  deleteMovie(movieId: $movieId)
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteMovieGQL extends Apollo.Mutation<DeleteMovieMutation, DeleteMovieMutationVariables> {
+    override document = DeleteMovieDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

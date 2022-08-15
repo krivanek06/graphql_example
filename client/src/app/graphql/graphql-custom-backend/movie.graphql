@@ -1,4 +1,4 @@
-fragment Movie on Movie {
+fragment MovieInfo on Movie {
 	id
 	createdAt
 	updatedAt
@@ -8,6 +8,22 @@ fragment Movie on Movie {
 
 query GetAllMovies {
 	getAllMovies {
-		...Movie
+		...MovieInfo
 	}
+}
+
+mutation CreateMovie($movieInputCreate: MovieInputCreate!) {
+	createMovie(movieInputCreate: $movieInputCreate) {
+		...MovieInfo
+	}
+}
+
+mutation EditMovie($movieInputEdit: MovieInputEdit!) {
+	editMovie(movieInputEdit: $movieInputEdit) {
+		...MovieInfo
+	}
+}
+
+mutation DeleteMovie($movieId: Int!) {
+	deleteMovie(movieId: $movieId)
 }

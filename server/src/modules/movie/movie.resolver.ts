@@ -46,7 +46,7 @@ export class MovieResolver {
 	}
 
 	@Mutation(() => Number)
-	async deleteMovie(@Args('movieId') movieId: number): Promise<number> {
+	async deleteMovie(@Args('movieId', { type: () => Int }) movieId: number): Promise<number> {
 		await this.movieService.deleteMovie(movieId);
 		this.pubSub.publish('deletedMovie', { movieId });
 		return movieId;

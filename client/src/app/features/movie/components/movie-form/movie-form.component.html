@@ -1,0 +1,28 @@
+<mat-card>
+	<!-- header -->
+	<mat-card-header>
+		<mat-card-title>Insert new Movie</mat-card-title>
+	</mat-card-header>
+
+	<!-- body -->
+	<form [formGroup]="form" (submit)="onSubmit()">
+		<mat-card-content>
+			<!-- title -->
+			<mat-form-field appearance="outline">
+				<mat-label>Add title</mat-label>
+				<input matInput formControlName="title" />
+			</mat-form-field>
+
+			<!-- description -->
+			<mat-form-field appearance="outline">
+				<mat-label>Add description</mat-label>
+				<textarea matInput formControlName="description"></textarea>
+			</mat-form-field>
+		</mat-card-content>
+
+		<!-- action buttons -->
+		<mat-card-actions>
+			<button mat-flat-button color="primary" type="submit">Save</button>
+		</mat-card-actions>
+	</form>
+</mat-card>

@@ -1,0 +1,20 @@
+:host {
+	mat-card-subtitle {
+		display: flex;
+		gap: 16px;
+	}
+
+	mat-form-field {
+		width: 100%;
+	}
+
+	mat-card-actions {
+		display: flex;
+		justify-content: end;
+		gap: 16px;
+
+		button {
+			min-width: 140px;
+		}
+	}
+}
