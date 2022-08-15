@@ -21,4 +21,12 @@ export class MovieCommentLikeService {
 			},
 		});
 	}
+
+	async deleteAllMovieCommentLikesByCommentId(movieCommentId: number): Promise<unknown> {
+		return this.prisma.movieCommentLike.deleteMany({
+			where: {
+				movieCommentId,
+			},
+		});
+	}
 }

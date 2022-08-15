@@ -33,6 +33,14 @@ export class MovieCommentService {
 		});
 	}
 
+	async deleteAllMovieCommentsByMovieId(movieId): Promise<unknown> {
+		return this.prisma.movieComment.deleteMany({
+			where: {
+				movieId,
+			},
+		});
+	}
+
 	async getAllMovieCommentsByUserId(userId: number): Promise<MovieComment[]> {
 		return this.prisma.movieComment.findMany({
 			where: {

@@ -29,8 +29,8 @@ model MovieComment {
   // user who liked the comment
   likedBy MovieCommentLike[]
 
-  // movie which was commented
-  Movie   Movie? @relation(fields: [movieId], references: [id])
+  // movie which was commented - cascade on delete
+  Movie   Movie? @relation(fields: [movieId], references: [id], onDelete: Cascade)
   movieId Int
 
   // user who created a comment
@@ -46,8 +46,8 @@ model MovieCommentLike {
   User   User? @relation(fields: [userId], references: [id])
   userId Int?
 
-  // comment that was liked
-  MovieComment   MovieComment? @relation(fields: [movieCommentId], references: [id])
+  // comment that was liked - cascade on delete
+  MovieComment   MovieComment? @relation(fields: [movieCommentId], references: [id], onDelete: Cascade)
   movieCommentId Int?
 }
 
