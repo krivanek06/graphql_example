@@ -43,6 +43,16 @@ export class MovieApiService {
 				movieInputCreate,
 			},
 			{
+				optimisticResponse: {
+					createMovie: {
+						__typename: 'Movie',
+						id: -1,
+						createdAt: new Date().toISOString(),
+						updatedAt: new Date().toISOString(),
+						title: movieInputCreate.title,
+						description: movieInputCreate.description,
+					},
+				},
 				update: (store: DataProxy, { data }) => {
 					const createdMovie = data?.createMovie as Movie;
 
@@ -70,19 +80,11 @@ export class MovieApiService {
 	}
 
 	editMovie(movieInputEdit: MovieInputEdit): Observable<FetchResult<EditMovieMutation>> {
-		return this.editMovieGQL.mutate(
-			{
-				movieInputEdit,
-			},
-			{
-				update: (store: DataProxy, { data }) => {
-					console.log('data from create', data);
-				},
-			}
-		);
+		return this.editMovieGQL.mutate({
+			movieInputEdit,
+		});
 	}
 
-	// todo remove from cache
 	deleteMovie(movieId: number): Observable<FetchResult<DeleteMovieMutation>> {
 		return this.deleteMovieGQL.mutate(
 			{

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MovieInfoFragment, MovieInputEdit } from 'src/app/graphql/graphql-custom-backend.service';
 
 @Component({
@@ -20,12 +20,22 @@ export class MovieCardComponent implements OnInit {
 
 	editing = false;
 
+	get title(): AbstractControl {
+		return this.form.get('title') as AbstractControl;
+	}
+
+	get description(): AbstractControl {
+		return this.form.get('description') as AbstractControl;
+	}
+
 	constructor(private fb: FormBuilder) {}
 
 	ngOnInit(): void {}
 
 	onToggleEdit(): void {
 		this.editing = !this.editing;
+		this.title.patchValue(this.movieInfo.title);
+		this.description.patchValue(this.movieInfo.description);
 	}
 
 	onSubmit(): void {
@@ -33,8 +43,8 @@ export class MovieCardComponent implements OnInit {
 		if (!this.form.invalid) {
 			this.editMovie.emit({
 				id: this.movieInfo.id,
-				title: this.form.get('title')?.value,
-				description: this.form.get('description')?.value,
+				title: this.title?.value,
+				description: this.description?.value,
 			});
 			this.editing = false;
 		}
