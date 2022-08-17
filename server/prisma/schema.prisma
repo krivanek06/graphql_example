@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:5432/graphql_example?connect_timeout=300"
+  url      = env("DATABASE_URL")
 }
 
 model Movie {

@@ -12,7 +12,6 @@ import {
 	GetAllMoviesDocument,
 	GetAllMoviesGQL,
 	GetAllMoviesQuery,
-	Movie,
 	MovieInfoFragment,
 	MovieInputCreate,
 	MovieInputEdit,
@@ -37,10 +36,13 @@ export class MovieApiService {
 		);
 	}
 
-	createMovie(movieInputCreate: MovieInputCreate): Observable<FetchResult<CreateMovieMutation>> {
+	createMovie({ title, description }: MovieInputCreate): Observable<FetchResult<CreateMovieMutation>> {
 		return this.createMovieGQL.mutate(
 			{
-				movieInputCreate,
+				movieInputCreate: {
+					title,
+					description,
+				},
 			},
 			{
 				optimisticResponse: {
@@ -49,12 +51,12 @@ export class MovieApiService {
 						id: -1,
 						createdAt: new Date().toISOString(),
 						updatedAt: new Date().toISOString(),
-						title: movieInputCreate.title,
-						description: movieInputCreate.description,
+						title: title,
+						description: description,
 					},
 				},
 				update: (store: DataProxy, { data }) => {
-					const createdMovie = data?.createMovie as Movie;
+					const createdMovie = data?.createMovie as MovieInfoFragment;
 
 					// query movies from cache
 					const moviesQuery = store.readQuery<GetAllMoviesQuery>({
@@ -79,9 +81,13 @@ export class MovieApiService {
 		);
 	}
 
-	editMovie(movieInputEdit: MovieInputEdit): Observable<FetchResult<EditMovieMutation>> {
+	editMovie({ id, title, description }: MovieInputEdit): Observable<FetchResult<EditMovieMutation>> {
 		return this.editMovieGQL.mutate({
-			movieInputEdit,
+			movieInputEdit: {
+				id,
+				title,
+				description,
+			},
 		});
 	}
 
