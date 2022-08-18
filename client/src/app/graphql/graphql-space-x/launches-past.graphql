@@ -1,0 +1,19 @@
+fragment LaunchLast on Launch {
+	mission_name
+	launch_date_local
+	launch_site {
+		site_id
+		site_name_long
+		site_name
+	}
+	links {
+		video_link
+		article_link
+	}
+}
+
+query LaunchesPast {
+	launchesPast(limit: 10) {
+		...LaunchLast
+	}
+}

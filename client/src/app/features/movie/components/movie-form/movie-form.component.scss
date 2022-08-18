@@ -1,0 +1,15 @@
+:host {
+	mat-form-field {
+		width: 100%;
+	}
+
+	mat-card-actions {
+		display: flex;
+		justify-content: end;
+		gap: 16px;
+
+		button {
+			min-width: 140px;
+		}
+	}
+}

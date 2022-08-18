@@ -6,7 +6,7 @@ import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { ApolloModule, APOLLO_NAMED_OPTIONS, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { environment } from 'src/environments/environment';
 import { DialogService } from '../shared/services/dialog-service.service';
@@ -113,6 +113,16 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 	};
 }
 
+export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClientOptions<any>> {
+	return {
+		spaceX: {
+			name: 'spaceX',
+			link: httpLink.create({ uri: 'https://api.spacex.land/graphql/' }),
+			cache: new InMemoryCache(),
+		},
+	};
+}
+
 @NgModule({
 	imports: [BrowserModule, HttpClientModule, ApolloModule],
 	providers: [
@@ -120,6 +130,11 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 			provide: APOLLO_OPTIONS,
 			useFactory: createDefaultApollo,
 			deps: [HttpLink],
+		},
+		{
+			provide: APOLLO_NAMED_OPTIONS,
+			deps: [HttpLink],
+			useFactory: createNamedApollo,
 		},
 	],
 })

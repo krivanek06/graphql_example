@@ -1,4 +1,8 @@
 # Run project
+- run the whole backend by `docker-compose up`
+- run the client by navigating into `client` and `npm run start`
+
+## Create & seed the database
 
 - Prisma: create schema from schema.prisma:
   - npx prisma migrate dev
@@ -10,6 +14,7 @@
 - pgadmin: http://localhost:5555/
   - username: pgadmin4@pgadmin.org
   - password: admin
+- graphql: http://localhost:3000/graphql
 
 # Resources
 

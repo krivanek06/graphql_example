@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import { Args, Int, Mutation, Parent, Query, ResolveField, Resolver, Subscription } from '@nestjs/graphql';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { PUB_SUB } from 'src/providers/redis/redisPubSub.module';
+import { delayCode } from 'src/utils/helpers.model';
 import { MovieComment } from './../movie-comment/movie-comment.model';
 import { MovieCommentService } from './../movie-comment/movie-comment.service';
 import { MovieInputCreate, MovieInputEdit } from './movie.input';
@@ -34,6 +35,7 @@ export class MovieResolver {
 	@Mutation(() => Movie)
 	async createMovie(@Args('movieInputCreate') movieInputCreate: MovieInputCreate): Promise<Movie> {
 		const createdMovie = await this.movieService.createMovie(movieInputCreate);
+		await delayCode(3000); // delay execution by 3 seconds
 		this.pubSub.publish('createdMovie', { createdMovie });
 		return createdMovie;
 	}
@@ -46,7 +48,7 @@ export class MovieResolver {
 	}
 
 	@Mutation(() => Number)
-	async deleteMovie(@Args('movieId') movieId: number): Promise<number> {
+	async deleteMovie(@Args('movieId', { type: () => Int }) movieId: number): Promise<number> {
 		await this.movieService.deleteMovie(movieId);
 		this.pubSub.publish('deletedMovie', { movieId });
 		return movieId;

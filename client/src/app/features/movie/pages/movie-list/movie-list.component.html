@@ -1,0 +1,13 @@
+<!-- show create movie form -->
+<app-movie-form (addMovie)="onMovieAdd($event)"></app-movie-form>
+
+<!-- list movies -->
+<h1>Movie list</h1>
+<ng-container *ngIf="movies$ | async as movies">
+	<app-movie-card
+		*ngFor="let movieInfo of movies"
+		[movieInfo]="movieInfo"
+		(deleteMovie)="onMovieDelete($event)"
+		(editMovie)="onEditMovie($event)"
+	></app-movie-card>
+</ng-container>
