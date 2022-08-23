@@ -12,7 +12,7 @@
 	<!-- body -->
 	<mat-card-content>
 		<!-- description normal display -->
-		<div *ngIf="!editing">{{movieInfo.description}}</div>
+		<div *ngIf="!editing" class="description">{{movieInfo.description}}</div>
 
 		<!-- editing form -->
 		<ng-container *ngIf="editing" [formGroup]="form">
@@ -34,7 +34,7 @@
 	<mat-card-actions>
 		<!-- no editing buttons -->
 		<ng-container *ngIf="!editing">
-			<button mat-flat-button color="accent" (click)="onToggleEdit()">Edit</button>
+			<button mat-stroked-button color="primary" (click)="onToggleEdit()">Edit</button>
 			<button mat-flat-button color="warn" (click)="onDeleteMovie()">Delete</button>
 		</ng-container>
 

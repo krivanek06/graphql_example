@@ -2,7 +2,34 @@
 	display: flex;
 	flex-flow: column;
 	gap: 16px;
-	width: 70%;
+	width: 90%;
 	margin: auto;
 	padding: 16px;
+
+	.wrapper-grid {
+		display: grid;
+		grid-template-columns: auto auto auto;
+		gap: 16px;
+
+		@media (max-width: 992px) {
+			grid-template-columns: auto;
+		}
+	}
+
+	h3 {
+		font-size: 20px;
+		font-weight: 500;
+		color: #4050b5;
+		margin-bottom: 0;
+		background-color: #e5e5e5;
+		padding: 4px;
+		border-radius: 8px;
+		text-align: center;
+	}
+
+	.wrapper-movie {
+		display: flex;
+		flex-flow: column;
+		gap: 16px;
+	}
 }

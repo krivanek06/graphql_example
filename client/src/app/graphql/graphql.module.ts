@@ -9,6 +9,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { ApolloModule, APOLLO_NAMED_OPTIONS, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { environment } from 'src/environments/environment';
+import { localMoviesReactiveVars } from '../features/movie/models/movie.model';
 import { DialogService } from '../shared/services/dialog-service.service';
 
 /*
@@ -57,18 +58,41 @@ const basicContext = setContext((_, { headers }) => {
 
 export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any> {
 	const cache = new InMemoryCache({
+		// TODO - missing type safety
 		// dataIdFromObject(responseObject) {
 		// 	switch (responseObject.__typename) {
-		// 		case 'AsteriskQueueTable':
-		// 			return `AsteriskQueueTable:${responseObject.name}`;
+		// 		case 'Movie':
+		// 			return `Movie:${responseObject.id}`;
 		// 		default:
 		// 			return defaultDataIdFromObject(responseObject);
 		// 	}
 		// },
+
 		typePolicies: {
+			Movie: {
+				// keyFields: ['title', 'id'], // to change Movie indentification in cachce
+				fields: {
+					title: {
+						read(title: string) {
+							return title.toUpperCase();
+						},
+					},
+					isSelected: {
+						read() {
+							return false;
+						},
+					},
+				},
+			},
 			Query: {
 				queryType: true,
-				fields: {},
+				fields: {
+					getAllLocalMoviesReactiveVars: {
+						read() {
+							return localMoviesReactiveVars();
+						},
+					},
+				},
 			},
 		},
 	});

@@ -19,27 +19,27 @@ export class MovieService {
 		});
 	}
 
-	async createMovie(movieInputCreate: MovieInputCreate): Promise<Movie> {
+	async createMovie({ title, description }: MovieInputCreate): Promise<Movie> {
 		return this.prisma.movie.create({
 			data: {
-				title: movieInputCreate.title,
-				description: movieInputCreate.description,
+				title,
+				description,
 			},
 		});
 	}
 
-	async editMovie(movieInputEdit: MovieInputEdit): Promise<Movie> {
+	async editMovie({ id, title, description }: MovieInputEdit): Promise<Movie> {
 		return this.prisma.movie.upsert({
 			update: {
-				title: movieInputEdit.title,
-				description: movieInputEdit.description,
+				title,
+				description,
 			},
 			create: {
-				title: movieInputEdit.title,
-				description: movieInputEdit.description,
+				title,
+				description,
 			},
 			where: {
-				id: movieInputEdit.id,
+				id,
 			},
 		});
 	}

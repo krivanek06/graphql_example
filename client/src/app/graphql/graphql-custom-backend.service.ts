@@ -21,6 +21,7 @@ export type Movie = {
   /** User's description to the movie */
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  isSelected: MovieSelectType;
   movieComment: Array<MovieComment>;
   /** User's title to the movie */
   title: Scalars['String'];
@@ -75,6 +76,11 @@ export type MovieInputEdit = {
   title: Scalars['String'];
 };
 
+export enum MovieSelectType {
+  Unselected = 'UNSELECTED',
+  IsSelected = 'isSelected'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
   createMovie: Movie;
@@ -105,6 +111,8 @@ export type MutationEditMovieArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  getAllLocalMovies: Array<Movie>;
+  getAllLocalMoviesReactiveVars: Array<Movie>;
   /** we return multiple movies */
   getAllMovies: Array<Movie>;
   getAllUsers: Array<User>;
@@ -141,26 +149,36 @@ export type User = {
   username: Scalars['String'];
 };
 
-export type MovieInfoFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null };
+export type GetAllLocalMoviesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllLocalMoviesQuery = { __typename?: 'Query', getAllLocalMovies: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType }> };
+
+export type GetAllLocalMoviesReactiveVarsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllLocalMoviesReactiveVarsQuery = { __typename?: 'Query', getAllLocalMoviesReactiveVars: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType }> };
+
+export type MovieInfoFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType };
 
 export type GetAllMoviesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllMoviesQuery = { __typename?: 'Query', getAllMovies: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null }> };
+export type GetAllMoviesQuery = { __typename?: 'Query', getAllMovies: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType }> };
 
 export type CreateMovieMutationVariables = Exact<{
   movieInputCreate: MovieInputCreate;
 }>;
 
 
-export type CreateMovieMutation = { __typename?: 'Mutation', createMovie: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null } };
+export type CreateMovieMutation = { __typename?: 'Mutation', createMovie: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType } };
 
 export type EditMovieMutationVariables = Exact<{
   movieInputEdit: MovieInputEdit;
 }>;
 
 
-export type EditMovieMutation = { __typename?: 'Mutation', editMovie: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null } };
+export type EditMovieMutation = { __typename?: 'Mutation', editMovie: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType } };
 
 export type DeleteMovieMutationVariables = Exact<{
   movieId: Scalars['Int'];
@@ -176,8 +194,45 @@ export const MovieInfoFragmentDoc = gql`
   updatedAt
   title
   description
+  isSelected @client
 }
     `;
+export const GetAllLocalMoviesDocument = gql`
+    query GetAllLocalMovies {
+  getAllLocalMovies @client {
+    ...MovieInfo
+  }
+}
+    ${MovieInfoFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetAllLocalMoviesGQL extends Apollo.Query<GetAllLocalMoviesQuery, GetAllLocalMoviesQueryVariables> {
+    override document = GetAllLocalMoviesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetAllLocalMoviesReactiveVarsDocument = gql`
+    query GetAllLocalMoviesReactiveVars {
+  getAllLocalMoviesReactiveVars @client {
+    ...MovieInfo
+  }
+}
+    ${MovieInfoFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetAllLocalMoviesReactiveVarsGQL extends Apollo.Query<GetAllLocalMoviesReactiveVarsQuery, GetAllLocalMoviesReactiveVarsQueryVariables> {
+    override document = GetAllLocalMoviesReactiveVarsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const GetAllMoviesDocument = gql`
     query GetAllMovies {
   getAllMovies {

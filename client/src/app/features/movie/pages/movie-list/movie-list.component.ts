@@ -16,15 +16,30 @@ export class MovieListComponent implements OnInit {
 		this.movies$ = this.movieApiService.getAllMovies();
 	}
 
-	async onMovieAdd(movieInputCreate: MovieInputCreate): Promise<void> {
+	/* Methods to manage Movie on backend */
+	async onMovieAddToServer(movieInputCreate: MovieInputCreate): Promise<void> {
 		await firstValueFrom(this.movieApiService.createMovie(movieInputCreate));
 	}
 
-	async onEditMovie(movieInputEdit: MovieInputEdit): Promise<void> {
+	async onEditMovieToServer(movieInputEdit: MovieInputEdit): Promise<void> {
 		await firstValueFrom(this.movieApiService.editMovie(movieInputEdit));
 	}
 
-	async onMovieDelete(movieId: number): Promise<void> {
+	async onMovieDeleteToServer(movieId: number): Promise<void> {
 		await firstValueFrom(this.movieApiService.deleteMovie(movieId));
 	}
+
+	/* Methods to manage Movie in reactive variables */
+	onMovieAddToReactiveVariables(movieInputCreate: MovieInputCreate): void {}
+
+	onMovieEditToReactiveVariables(movieInputEdit: MovieInputEdit): void {}
+
+	onMovieDeleteToReactiveVariables(movieId: number): void {}
+
+	/* Methods to manage Movie in Apollo cache */
+	onMovieAddToApolloCache(movieInputCreate: MovieInputCreate): void {}
+
+	onMovieEditToApolloCache(movieInputEdit: MovieInputEdit): void {}
+
+	onMovieDeleteToApolloCache(movieId: number): void {}
 }

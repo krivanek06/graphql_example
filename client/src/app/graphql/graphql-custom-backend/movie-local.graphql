@@ -1,0 +1,11 @@
+query GetAllLocalMovies {
+	getAllLocalMovies @client {
+		...MovieInfo
+	}
+}
+
+query GetAllLocalMoviesReactiveVars {
+	getAllLocalMoviesReactiveVars @client {
+		...MovieInfo
+	}
+}
