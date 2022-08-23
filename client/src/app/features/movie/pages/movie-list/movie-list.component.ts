@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { MovieApiService } from 'src/app/core/api/movie-api.service';
 import { MovieInfoFragment, MovieInputCreate, MovieInputEdit } from 'src/app/graphql/graphql-custom-backend.service';
+import { MovieLocalService } from '../../services/movie-local.service';
 
 @Component({
 	selector: 'app-movie-list',
@@ -9,11 +10,15 @@ import { MovieInfoFragment, MovieInputCreate, MovieInputEdit } from 'src/app/gra
 	styleUrls: ['./movie-list.component.scss'],
 })
 export class MovieListComponent implements OnInit {
-	movies$!: Observable<MovieInfoFragment[]>;
-	constructor(private movieApiService: MovieApiService) {}
+	moviesFromServer$!: Observable<MovieInfoFragment[]>;
+	moviesFromReactiveVariables$!: Observable<MovieInfoFragment[]>;
+	moviesFromApolloCache$!: Observable<MovieInfoFragment[]>;
+	constructor(private movieApiService: MovieApiService, private movieLocalService: MovieLocalService) {}
 
 	ngOnInit(): void {
-		this.movies$ = this.movieApiService.getAllMovies();
+		this.moviesFromServer$ = this.movieApiService.getAllMovies();
+		this.moviesFromReactiveVariables$ = this.movieLocalService.getAllLocalMoviesReactiveVars();
+		this.moviesFromApolloCache$ = this.movieLocalService.getAllLocalMovies();
 	}
 
 	/* Methods to manage Movie on backend */
@@ -30,16 +35,28 @@ export class MovieListComponent implements OnInit {
 	}
 
 	/* Methods to manage Movie in reactive variables */
-	onMovieAddToReactiveVariables(movieInputCreate: MovieInputCreate): void {}
+	onMovieAddToReactiveVariables(movieInputCreate: MovieInputCreate): void {
+		this.movieLocalService.onMovieAddToReactiveVariables(movieInputCreate);
+	}
 
-	onMovieEditToReactiveVariables(movieInputEdit: MovieInputEdit): void {}
+	onMovieEditToReactiveVariables(movieInputEdit: MovieInputEdit): void {
+		this.movieLocalService.onMovieEditToReactiveVariables(movieInputEdit);
+	}
 
-	onMovieDeleteToReactiveVariables(movieId: number): void {}
+	onMovieDeleteToReactiveVariables(movieId: number): void {
+		this.movieLocalService.onMovieDeleteToReactiveVariables(movieId);
+	}
 
 	/* Methods to manage Movie in Apollo cache */
-	onMovieAddToApolloCache(movieInputCreate: MovieInputCreate): void {}
+	onMovieAddToApolloCache(movieInputCreate: MovieInputCreate): void {
+		this.movieLocalService.onMovieAddToApolloCache(movieInputCreate);
+	}
 
-	onMovieEditToApolloCache(movieInputEdit: MovieInputEdit): void {}
+	onMovieEditToApolloCache(movieInputEdit: MovieInputEdit): void {
+		this.movieLocalService.onMovieEditToApolloCache(movieInputEdit);
+	}
 
-	onMovieDeleteToApolloCache(movieId: number): void {}
+	onMovieDeleteToApolloCache(movieId: number): void {
+		this.movieLocalService.onMovieDeleteToApolloCache(movieId);
+	}
 }

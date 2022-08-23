@@ -15,7 +15,7 @@
 <h1>Movie list</h1>
 <div class="wrapper-grid">
 	<!-- movies persisted on the backend -->
-	<div *ngIf="movies$ | async as movies" class="wrapper-movie">
+	<div *ngIf="moviesFromServer$ | async as movies" class="wrapper-movie">
 		<h3>Movies persisted on the backend</h3>
 		<app-movie-card
 			*ngFor="let movieInfo of movies"
@@ -26,8 +26,8 @@
 	</div>
 
 	<!-- Persited movie localy in reactive variables -->
-	<div *ngIf="movies$ | async as movies" class="wrapper-movie">
-		<h3>Persed movie localy in reactive variables</h3>
+	<div *ngIf="moviesFromReactiveVariables$ | async as movies" class="wrapper-movie">
+		<h3>Persited movie localy in reactive variables</h3>
 		<app-movie-card
 			*ngFor="let movieInfo of movies"
 			[movieInfo]="movieInfo"
@@ -37,8 +37,8 @@
 	</div>
 
 	<!-- Persisted movie locally in Apollo Cache -->
-	<div *ngIf="movies$ | async as movies" class="wrapper-movie">
-		<h3>Persisted movie locally in Apollo Cache</h3>
+	<div *ngIf="moviesFromApolloCache$ | async as movies" class="wrapper-movie">
+		<h3>Persited movie locally in Apollo Cache</h3>
 		<app-movie-card
 			*ngFor="let movieInfo of movies"
 			[movieInfo]="movieInfo"

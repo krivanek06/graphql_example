@@ -11,6 +11,7 @@ import { HttpLink } from 'apollo-angular/http';
 import { environment } from 'src/environments/environment';
 import { localMoviesReactiveVars } from '../features/movie/models/movie.model';
 import { DialogService } from '../shared/services/dialog-service.service';
+import { MovieInfoFragment } from './graphql-custom-backend.service';
 
 /*
   how to use multiple endpoints: https://stackoverflow.com/questions/56212486/connect-an-angular-app-to-multiple-apollo-clients
@@ -90,6 +91,18 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 					getAllLocalMoviesReactiveVars: {
 						read() {
 							return localMoviesReactiveVars();
+						},
+					},
+					getAllLocalMovies: {
+						read(data: MovieInfoFragment[] | undefined, { variables }) {
+							return data ?? [];
+						},
+						merge(existing: MovieInfoFragment[] = [], incoming: MovieInfoFragment | MovieInfoFragment[]) {
+							// if array is passed, ignore already saved movies
+							if (Array.isArray(incoming)) {
+								return [...incoming];
+							}
+							return [incoming, ...existing];
 						},
 					},
 				},
