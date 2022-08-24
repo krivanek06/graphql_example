@@ -22,6 +22,7 @@
 			[movieInfo]="movieInfo"
 			(deleteMovie)="onMovieDeleteToServer($event)"
 			(editMovie)="onEditMovieToServer($event)"
+			(toggleSelectMovie)="onToggleSelectMovie(movieInfo, $event)"
 		></app-movie-card>
 	</div>
 
@@ -44,6 +45,7 @@
 			[movieInfo]="movieInfo"
 			(deleteMovie)="onMovieDeleteToApolloCache($event)"
 			(editMovie)="onMovieEditToApolloCache($event)"
+			(toggleSelectMovie)="onToggleSelectMovie(movieInfo, $event)"
 		></app-movie-card>
 	</div>
 </div>

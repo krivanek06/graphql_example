@@ -8,10 +8,12 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { ApolloModule, APOLLO_NAMED_OPTIONS, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
+import { createPersistedQueryLink } from 'apollo-angular/persisted-queries';
+import { sha256 } from 'crypto-hash';
 import { environment } from 'src/environments/environment';
 import { localMoviesReactiveVars } from '../features/movie/models/movie.model';
 import { DialogService } from '../shared/services/dialog-service.service';
-import { MovieInfoFragment } from './graphql-custom-backend.service';
+import { MovieInfoFragment, MovieSelectType } from './graphql-custom-backend.service';
 
 /*
   how to use multiple endpoints: https://stackoverflow.com/questions/56212486/connect-an-angular-app-to-multiple-apollo-clients
@@ -30,8 +32,7 @@ const errorLink = onError(({ graphQLErrors, networkError, response }) => {
 		}
 
 		// log errors in console
-		graphQLErrors.forEach((e) => console.log(e));
-		graphQLErrors.map(({ message, locations, path }) =>
+		graphQLErrors.forEach(({ message, locations, path }) =>
 			console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
 		);
 	}
@@ -79,8 +80,8 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 						},
 					},
 					isSelected: {
-						read() {
-							return false;
+						read(selectType: MovieSelectType) {
+							return selectType ?? MovieSelectType.Unselected;
 						},
 					},
 				},
@@ -110,10 +111,15 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 		},
 	});
 
-	// create http & ws connection
-	const http = httpLink.create({
-		uri: environment.custom_graphql_backend_url,
-	});
+	// create http with persisten queries
+	// https://apollo-angular.com/docs/recipes/automatic-persisted-queries
+	const http = createPersistedQueryLink({
+		sha256,
+	}).concat(
+		httpLink.create({
+			uri: environment.custom_graphql_backend_url,
+		})
+	);
 
 	// add token to WS connections
 	const ws = new WebSocketLink({
@@ -137,7 +143,7 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 		http
 	);
 
-	return {
+	const config: ApolloClientOptions<any> = {
 		connectToDevTools: !environment.production,
 		assumeImmutableResults: true,
 		cache,
@@ -148,6 +154,8 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 			},
 		},
 	};
+
+	return config;
 }
 
 export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClientOptions<any>> {

@@ -19,6 +19,8 @@ export class MovieListComponent implements OnInit {
 		this.moviesFromServer$ = this.movieApiService.getAllMovies();
 		this.moviesFromReactiveVariables$ = this.movieLocalService.getAllLocalMoviesReactiveVars();
 		this.moviesFromApolloCache$ = this.movieLocalService.getAllLocalMovies();
+
+		this.moviesFromServer$.subscribe((x) => console.log(x));
 	}
 
 	/* Methods to manage Movie on backend */
@@ -58,5 +60,10 @@ export class MovieListComponent implements OnInit {
 
 	onMovieDeleteToApolloCache(movieId: number): void {
 		this.movieLocalService.onMovieDeleteToApolloCache(movieId);
+	}
+
+	/* Additional functionality */
+	onToggleSelectMovie(movie: MovieInfoFragment, isSelected: boolean): void {
+		this.movieLocalService.onToggleSelectMovie(movie, isSelected);
 	}
 }

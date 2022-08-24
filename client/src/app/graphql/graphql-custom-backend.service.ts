@@ -77,8 +77,8 @@ export type MovieInputEdit = {
 };
 
 export enum MovieSelectType {
-  Unselected = 'UNSELECTED',
-  IsSelected = 'isSelected'
+  Selected = 'SELECTED',
+  Unselected = 'UNSELECTED'
 }
 
 export type Mutation = {

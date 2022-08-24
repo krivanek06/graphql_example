@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import {
 	GetAllLocalMoviesQuery,
 	MovieInfoFragment,
+	MovieInfoFragmentDoc,
 	MovieInputCreate,
 	MovieInputEdit,
 	MovieSelectType,
@@ -39,8 +40,10 @@ export class MovieLocalService {
 	onMovieEditToReactiveVariables({ id, title, description }: MovieInputEdit): void {
 		// find index of the edited movie
 		const editedMovieIndex = localMoviesReactiveVars().findIndex((movie) => movie.id === id);
+
 		// get the edited movie by index
 		const editedMovie = localMoviesReactiveVars()[editedMovieIndex];
+
 		// create new array where we replace the old movie title & description
 		const editedArray = Object.assign([], localMoviesReactiveVars(), {
 			[editedMovieIndex]: {
@@ -50,6 +53,7 @@ export class MovieLocalService {
 				updatedAt: new Date().toISOString(),
 			},
 		});
+
 		// save whole array of movies into reactive vars
 		localMoviesReactiveVars(editedArray);
 	}
@@ -85,6 +89,7 @@ export class MovieLocalService {
 		// find index of the edited movie
 		const editedMovieIndex = getAllLocalMovies.findIndex((movie) => movie.id === id);
 
+		// editedMovieIndex can be 0, so check only for undefined
 		if (editedMovieIndex !== undefined) {
 			// get the edited movie by index
 			const editedMovie = getAllLocalMovies[editedMovieIndex];
@@ -113,6 +118,36 @@ export class MovieLocalService {
 
 		// update cache with rest of the movies
 		this.updateGetAllLocalMoviesQuery(cachedMoviesFiltered);
+	}
+
+	onToggleSelectMovie(movie: MovieInfoFragment, isSelected: boolean): void {
+		// These two are the same
+
+		// this.apollo.client.cache.updateFragment<MovieInfoFragment>(
+		// 	{
+		// 		fragment: MovieInfoFragmentDoc,
+		// 	},
+		// 	() => ({
+		// 		__typename: 'Movie',
+		// 		id: movie.id,
+		// 		title: movie.title,
+		// 		createdAt: movie.createdAt,
+		// 		description: movie.description,
+		// 		updatedAt: new Date().toISOString(),
+		// 		isSelected: isSelected ? MovieSelectType.Selected : MovieSelectType.Unselected,
+		// 	})
+		// );
+
+		this.apollo.client.writeFragment<MovieInfoFragment>({
+			id: `${movie.__typename}:${movie.id}`,
+			fragment: MovieInfoFragmentDoc,
+			fragmentName: 'MovieInfo',
+			data: {
+				...movie,
+				isSelected: isSelected ? MovieSelectType.Selected : MovieSelectType.Unselected,
+				updatedAt: new Date().toISOString(),
+			},
+		});
 	}
 
 	/* --------------------------------------- */
