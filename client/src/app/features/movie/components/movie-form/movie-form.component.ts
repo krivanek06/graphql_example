@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MovieInputCreate } from 'src/app/graphql/graphql-custom-backend.service';
 
@@ -8,6 +8,7 @@ import { MovieInputCreate } from 'src/app/graphql/graphql-custom-backend.service
 	styleUrls: ['./movie-form.component.scss'],
 })
 export class MovieFormComponent implements OnInit {
+	@Input() title: string = '';
 	@Output() addMovie: EventEmitter<MovieInputCreate> = new EventEmitter<MovieInputCreate>();
 
 	protected readonly form: FormGroup = this.fb.nonNullable.group({

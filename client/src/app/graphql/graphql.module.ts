@@ -8,8 +8,12 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { ApolloModule, APOLLO_NAMED_OPTIONS, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
+import { createPersistedQueryLink } from 'apollo-angular/persisted-queries';
+import { sha256 } from 'crypto-hash';
 import { environment } from 'src/environments/environment';
+import { localMoviesReactiveVars } from '../features/movie/models/movie.model';
 import { DialogService } from '../shared/services/dialog-service.service';
+import { MovieInfoFragment, MovieSelectType } from './graphql-custom-backend.service';
 
 /*
   how to use multiple endpoints: https://stackoverflow.com/questions/56212486/connect-an-angular-app-to-multiple-apollo-clients
@@ -28,8 +32,7 @@ const errorLink = onError(({ graphQLErrors, networkError, response }) => {
 		}
 
 		// log errors in console
-		graphQLErrors.forEach((e) => console.log(e));
-		graphQLErrors.map(({ message, locations, path }) =>
+		graphQLErrors.forEach(({ message, locations, path }) =>
 			console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
 		);
 	}
@@ -57,26 +60,66 @@ const basicContext = setContext((_, { headers }) => {
 
 export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any> {
 	const cache = new InMemoryCache({
+		// TODO - missing type safety
 		// dataIdFromObject(responseObject) {
 		// 	switch (responseObject.__typename) {
-		// 		case 'AsteriskQueueTable':
-		// 			return `AsteriskQueueTable:${responseObject.name}`;
+		// 		case 'Movie':
+		// 			return `Movie:${responseObject.id}`;
 		// 		default:
 		// 			return defaultDataIdFromObject(responseObject);
 		// 	}
 		// },
+
 		typePolicies: {
+			Movie: {
+				// keyFields: ['title', 'id'], // to change Movie indentification in cachce
+				fields: {
+					title: {
+						read(title: string) {
+							return title.toUpperCase();
+						},
+					},
+					isSelected: {
+						read(selectType: MovieSelectType) {
+							return selectType ?? MovieSelectType.Unselected;
+						},
+					},
+				},
+			},
 			Query: {
 				queryType: true,
-				fields: {},
+				fields: {
+					getAllLocalMoviesReactiveVars: {
+						read() {
+							return localMoviesReactiveVars();
+						},
+					},
+					getAllLocalMovies: {
+						read(data: MovieInfoFragment[] | undefined, { variables }) {
+							return data ?? [];
+						},
+						merge(existing: MovieInfoFragment[] = [], incoming: MovieInfoFragment | MovieInfoFragment[]) {
+							// if array is passed, ignore already saved movies
+							if (Array.isArray(incoming)) {
+								return [...incoming];
+							}
+							return [incoming, ...existing];
+						},
+					},
+				},
 			},
 		},
 	});
 
-	// create http & ws connection
-	const http = httpLink.create({
-		uri: environment.custom_graphql_backend_url,
-	});
+	// create http with persisten queries
+	// https://apollo-angular.com/docs/recipes/automatic-persisted-queries
+	const http = createPersistedQueryLink({
+		sha256,
+	}).concat(
+		httpLink.create({
+			uri: environment.custom_graphql_backend_url,
+		})
+	);
 
 	// add token to WS connections
 	const ws = new WebSocketLink({
@@ -100,7 +143,13 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 		http
 	);
 
-	return {
+	// Getting error -> 1 import { ApolloCache } from '@apollo/client/core';
+	// persistCache({
+	// 	cache,
+	// 	storage: new LocalStorageWrapper(window.localStorage),
+	// });
+
+	const config: ApolloClientOptions<any> = {
 		connectToDevTools: !environment.production,
 		assumeImmutableResults: true,
 		cache,
@@ -111,6 +160,8 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 			},
 		},
 	};
+
+	return config;
 }
 
 export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClientOptions<any>> {

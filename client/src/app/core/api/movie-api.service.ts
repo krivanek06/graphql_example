@@ -15,6 +15,7 @@ import {
 	MovieInfoFragment,
 	MovieInputCreate,
 	MovieInputEdit,
+	MovieSelectType,
 } from './../../graphql/graphql-custom-backend.service';
 
 @Injectable({
@@ -53,6 +54,7 @@ export class MovieApiService {
 						updatedAt: new Date().toISOString(),
 						title: title,
 						description: description,
+						isSelected: MovieSelectType.Unselected,
 					},
 				},
 				update: (store: DataProxy, { data }) => {

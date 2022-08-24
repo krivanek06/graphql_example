@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MovieInfoFragment, MovieInputEdit } from 'src/app/graphql/graphql-custom-backend.service';
+import { MovieInfoFragment, MovieInputEdit, MovieSelectType } from 'src/app/graphql/graphql-custom-backend.service';
 
 @Component({
 	selector: 'app-movie-card',
@@ -8,15 +8,19 @@ import { MovieInfoFragment, MovieInputEdit } from 'src/app/graphql/graphql-custo
 	styleUrls: ['./movie-card.component.scss'],
 })
 export class MovieCardComponent implements OnInit {
+	@Output() toggleSelectMovie: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Output() editMovie: EventEmitter<MovieInputEdit> = new EventEmitter<MovieInputEdit>();
 	@Output() deleteMovie: EventEmitter<number> = new EventEmitter<number>();
 
 	@Input() movieInfo!: MovieInfoFragment;
+	@Input() showSelectMovie = true;
 
 	protected readonly form: FormGroup = this.fb.nonNullable.group({
 		title: ['', [Validators.required]],
 		description: ['', [Validators.required]],
 	});
+
+	MovieSelectType = MovieSelectType;
 
 	editing = false;
 
@@ -52,5 +56,9 @@ export class MovieCardComponent implements OnInit {
 
 	onDeleteMovie(): void {
 		this.deleteMovie.emit(this.movieInfo.id);
+	}
+
+	onSelectChange(inSelected: boolean): void {
+		this.toggleSelectMovie.emit(inSelected);
 	}
 }

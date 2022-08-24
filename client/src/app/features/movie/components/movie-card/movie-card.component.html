@@ -1,18 +1,33 @@
 <mat-card>
 	<!-- header -->
 	<mat-card-header>
-		<mat-card-title>[{{movieInfo.id}}] {{ movieInfo.title }}</mat-card-title>
+		<mat-card-title>
+			<!-- title -->
+			<span>[{{movieInfo.id}}] {{ movieInfo.title }}</span>
+
+			<!-- select -->
+			<button mat-icon-button *ngIf="movieInfo.isSelected === MovieSelectType.Unselected" (click)="onSelectChange(true)">
+				<mat-icon>star_border</mat-icon>
+			</button>
+
+			<!-- unselect -->
+			<button mat-icon-button *ngIf="movieInfo.isSelected === MovieSelectType.Selected" (click)="onSelectChange(false)">
+				<mat-icon>star</mat-icon>
+			</button>
+		</mat-card-title>
+
+		<!-- subtitles -->
 		<mat-card-subtitle>
-			<span>Created at: {{ movieInfo.createdAt | date: 'HH:mm, dd.MM.YYYY'}}</span>
+			<span>Created at: {{ movieInfo.createdAt | date: 'HH:mm:ss, dd.MM.YYYY'}}</span>
 			<span>|</span>
-			<span>Upated at: {{ movieInfo.updatedAt | date: 'HH:mm, dd.MM.YYYY'}}</span>
+			<span>Upated at: {{ movieInfo.updatedAt | date: 'HH:mm:ss, dd.MM.YYYY'}}</span>
 		</mat-card-subtitle>
 	</mat-card-header>
 
 	<!-- body -->
 	<mat-card-content>
 		<!-- description normal display -->
-		<div *ngIf="!editing">{{movieInfo.description}}</div>
+		<div *ngIf="!editing" class="description">{{movieInfo.description}}</div>
 
 		<!-- editing form -->
 		<ng-container *ngIf="editing" [formGroup]="form">
@@ -34,7 +49,7 @@
 	<mat-card-actions>
 		<!-- no editing buttons -->
 		<ng-container *ngIf="!editing">
-			<button mat-flat-button color="accent" (click)="onToggleEdit()">Edit</button>
+			<button mat-stroked-button color="primary" (click)="onToggleEdit()">Edit</button>
 			<button mat-flat-button color="warn" (click)="onDeleteMovie()">Delete</button>
 		</ng-container>
 

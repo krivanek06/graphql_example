@@ -1,0 +1,13 @@
+extend type Query {
+	getAllLocalMovies: [Movie!]!
+	getAllLocalMoviesReactiveVars: [Movie!]!
+}
+
+enum MovieSelectType {
+	SELECTED
+	UNSELECTED
+}
+
+extend type Movie {
+	isSelected: MovieSelectType!
+}
