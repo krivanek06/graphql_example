@@ -19,8 +19,6 @@ export class MovieListComponent implements OnInit {
 		this.moviesFromServer$ = this.movieApiService.getAllMovies();
 		this.moviesFromReactiveVariables$ = this.movieLocalService.getAllLocalMoviesReactiveVars();
 		this.moviesFromApolloCache$ = this.movieLocalService.getAllLocalMovies();
-
-		this.moviesFromServer$.subscribe((x) => console.log(x));
 	}
 
 	/* Methods to manage Movie on backend */

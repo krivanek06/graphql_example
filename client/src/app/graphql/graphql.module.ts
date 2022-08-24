@@ -143,6 +143,12 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 		http
 	);
 
+	// Getting error -> 1 import { ApolloCache } from '@apollo/client/core';
+	// persistCache({
+	// 	cache,
+	// 	storage: new LocalStorageWrapper(window.localStorage),
+	// });
+
 	const config: ApolloClientOptions<any> = {
 		connectToDevTools: !environment.production,
 		assumeImmutableResults: true,

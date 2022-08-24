@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "apollo3-cache-persist": "^0.14.1"
+  }
+}
