@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { MovieApiService } from 'src/app/core/api/movie-api.service';
-import { MovieInfoFragment, MovieInputCreate, MovieInputEdit } from 'src/app/graphql/graphql-custom-backend.service';
+import { MovieInfoFragment, MovieInputEdit } from 'src/app/graphql/graphql-custom-backend.service';
+import { MovieForm } from '../../models/movie.model';
 import { MovieLocalService } from '../../services/movie-local.service';
 
 @Component({
@@ -20,11 +21,18 @@ export class MovieListComponent implements OnInit {
 		this.moviesFromReactiveVariables$ = this.movieLocalService.getAllLocalMoviesReactiveVars();
 		this.moviesFromApolloCache$ = this.movieLocalService.getAllLocalMovies();
 	}
+	async onMovieAdd(movieForm: MovieForm): Promise<void> {
+		const movieInputCreate = movieForm.movieInputCreate;
+		if (movieForm.persistOption === 'Server') {
+			await firstValueFrom(this.movieApiService.createMovie(movieInputCreate));
+		} else if (movieForm.persistOption === 'LocalReactiveVariables') {
+			this.movieLocalService.onMovieAddToReactiveVariables(movieInputCreate);
+		} else {
+			this.movieLocalService.onMovieAddToApolloCache(movieInputCreate);
+		}
+	}
 
 	/* Methods to manage Movie on backend */
-	async onMovieAddToServer(movieInputCreate: MovieInputCreate): Promise<void> {
-		await firstValueFrom(this.movieApiService.createMovie(movieInputCreate));
-	}
 
 	async onEditMovieToServer(movieInputEdit: MovieInputEdit): Promise<void> {
 		await firstValueFrom(this.movieApiService.editMovie(movieInputEdit));
@@ -35,9 +43,6 @@ export class MovieListComponent implements OnInit {
 	}
 
 	/* Methods to manage Movie in reactive variables */
-	onMovieAddToReactiveVariables(movieInputCreate: MovieInputCreate): void {
-		this.movieLocalService.onMovieAddToReactiveVariables(movieInputCreate);
-	}
 
 	onMovieEditToReactiveVariables(movieInputEdit: MovieInputEdit): void {
 		this.movieLocalService.onMovieEditToReactiveVariables(movieInputEdit);
@@ -48,9 +53,6 @@ export class MovieListComponent implements OnInit {
 	}
 
 	/* Methods to manage Movie in Apollo cache */
-	onMovieAddToApolloCache(movieInputCreate: MovieInputCreate): void {
-		this.movieLocalService.onMovieAddToApolloCache(movieInputCreate);
-	}
 
 	onMovieEditToApolloCache(movieInputEdit: MovieInputEdit): void {
 		this.movieLocalService.onMovieEditToApolloCache(movieInputEdit);

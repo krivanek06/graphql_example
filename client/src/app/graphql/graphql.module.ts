@@ -95,7 +95,7 @@ export function createDefaultApollo(httpLink: HttpLink): ApolloClientOptions<any
 						},
 					},
 					getAllLocalMovies: {
-						read(data: MovieInfoFragment[] | undefined, { variables }) {
+						read(data?: MovieInfoFragment[]) {
 							return data ?? [];
 						},
 						merge(existing: MovieInfoFragment[] = [], incoming: MovieInfoFragment | MovieInfoFragment[]) {

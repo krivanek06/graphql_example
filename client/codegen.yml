@@ -4,7 +4,7 @@ generates:
   ./src/app/graphql/graphql-custom-backend.service.ts: # where to generate file
     schema:
       - http://localhost:3000/graphql # where the server lives
-      - src/app/graphql/garphql-local-schema/*.graphql # where is our local schema
+      - src/app/graphql/graphql-local-schema/*.graphql # where is our local schema
     documents:
       - src/app/graphql/graphql-custom-backend/*.graphql # where are our queries / mutations, etc.
     plugins:

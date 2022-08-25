@@ -13,8 +13,22 @@
 		gap: 16px;
 
 		button {
-			min-width: 90%;
-			margin: auto;
+			min-width: 200px;
+		}
+	}
+
+	.wrapper-radio-options {
+		display: flex;
+		flex-flow: column;
+		gap: 4px;
+		label {
+			font-size: 16px;
+			font-weight: 500;
+		}
+		mat-radio-group {
+			display: flex;
+			flex-flow: column;
+			gap: 4px;
 		}
 	}
 }

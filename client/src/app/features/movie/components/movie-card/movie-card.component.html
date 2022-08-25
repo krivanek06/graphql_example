@@ -6,12 +6,20 @@
 			<span>[{{movieInfo.id}}] {{ movieInfo.title }}</span>
 
 			<!-- select -->
-			<button mat-icon-button *ngIf="movieInfo.isSelected === MovieSelectType.Unselected" (click)="onSelectChange(true)">
+			<button
+				mat-icon-button
+				*ngIf="showSelectMovie && movieInfo.isSelected === MovieSelectType.Unselected"
+				(click)="onSelectChange(true)"
+			>
 				<mat-icon>star_border</mat-icon>
 			</button>
 
 			<!-- unselect -->
-			<button mat-icon-button *ngIf="movieInfo.isSelected === MovieSelectType.Selected" (click)="onSelectChange(false)">
+			<button
+				mat-icon-button
+				*ngIf="showSelectMovie && movieInfo.isSelected === MovieSelectType.Selected"
+				(click)="onSelectChange(false)"
+			>
 				<mat-icon>star</mat-icon>
 			</button>
 		</mat-card-title>

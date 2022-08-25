@@ -1,24 +1,16 @@
 <!-- show create movie form -->
-<div class="wrapper-grid">
-	<!-- form to persis movie on the backend -->
-	<app-movie-form title="Send movie to the Backend" (addMovie)="onMovieAddToServer($event)"></app-movie-form>
-	<!-- form to persist movie in reactive variables -->
-	<app-movie-form
-		title="Persit movie localy in reactive variables"
-		(addMovie)="onMovieAddToReactiveVariables($event)"
-	></app-movie-form>
-	<!-- form to persis movies in graphql cache, persist on reload -->
-	<app-movie-form title="Persist movie locally in Apollo Cache" (addMovie)="onMovieAddToApolloCache($event)"></app-movie-form>
+<div>
+	<app-movie-form (addMovie)="onMovieAdd($event)"></app-movie-form>
 </div>
 
 <!-- list movies -->
 <h1>Movie list</h1>
 <div class="wrapper-grid">
 	<!-- movies persisted on the backend -->
-	<div *ngIf="moviesFromServer$ | async as movies" class="wrapper-movie">
+	<div class="wrapper-movie">
 		<h3>Movies persisted on the backend</h3>
 		<app-movie-card
-			*ngFor="let movieInfo of movies"
+			*ngFor="let movieInfo of moviesFromServer$ | async"
 			[movieInfo]="movieInfo"
 			(deleteMovie)="onMovieDeleteToServer($event)"
 			(editMovie)="onEditMovieToServer($event)"
@@ -27,21 +19,22 @@
 	</div>
 
 	<!-- Persited movie localy in reactive variables -->
-	<div *ngIf="moviesFromReactiveVariables$ | async as movies" class="wrapper-movie">
+	<div class="wrapper-movie">
 		<h3>Persited movie localy in reactive variables</h3>
 		<app-movie-card
-			*ngFor="let movieInfo of movies"
+			*ngFor="let movieInfo of moviesFromReactiveVariables$ | async"
 			[movieInfo]="movieInfo"
+			[showSelectMovie]="false"
 			(deleteMovie)="onMovieDeleteToReactiveVariables($event)"
 			(editMovie)="onMovieEditToReactiveVariables($event)"
 		></app-movie-card>
 	</div>
 
 	<!-- Persisted movie locally in Apollo Cache -->
-	<div *ngIf="moviesFromApolloCache$ | async as movies" class="wrapper-movie">
+	<div class="wrapper-movie">
 		<h3>Persited movie locally in Apollo Cache</h3>
 		<app-movie-card
-			*ngFor="let movieInfo of movies"
+			*ngFor="let movieInfo of moviesFromApolloCache$ | async"
 			[movieInfo]="movieInfo"
 			(deleteMovie)="onMovieDeleteToApolloCache($event)"
 			(editMovie)="onMovieEditToApolloCache($event)"

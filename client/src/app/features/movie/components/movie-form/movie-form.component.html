@@ -20,6 +20,14 @@
 			</mat-form-field>
 		</mat-card-content>
 
+		<!-- persisting options -->
+		<div class="wrapper-radio-options">
+			<label id="persisting_options">Persisting options</label>
+			<mat-radio-group formControlName="persistOption" aria-labelledby="persisting_options">
+				<mat-radio-button *ngFor="let season of persistOptions" [value]="season"> {{season}} </mat-radio-button>
+			</mat-radio-group>
+		</div>
+
 		<!-- action buttons -->
 		<mat-card-actions>
 			<button mat-flat-button color="primary" type="submit">Save</button>
