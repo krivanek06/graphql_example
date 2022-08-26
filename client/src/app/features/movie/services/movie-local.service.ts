@@ -27,8 +27,11 @@ export class MovieLocalService {
 	) {}
 
 	/* Methods to manage Movie in reactive variables */
+	get allLocalMoviesReactiveVars(): MovieInfoFragment[] {
+		return localMoviesReactiveVars();
+	}
 	getAllLocalMoviesReactiveVars(): Observable<MovieInfoFragment[]> {
-		// return localMoviesReactiveVars()]); // <-- this also works
+		// return of(localMoviesReactiveVars()); // <-- this doesn't work, not reactive
 		return this.getAllLocalMoviesReactiveVarsGQL.watch().valueChanges.pipe(map((res) => res.data.getAllLocalMoviesReactiveVars));
 	}
 
