@@ -35,6 +35,7 @@ export type MovieComment = {
   /** Comment that was added */
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  likeCount: Scalars['Float'];
   likedBy: Array<MovieCommentLike>;
   movieId: Scalars['Float'];
   user: User;
@@ -150,6 +151,8 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type MovieCommentInfoFragment = { __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likeCount: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } };
+
 export type GetAllLocalMoviesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -162,10 +165,19 @@ export type GetAllLocalMoviesReactiveVarsQuery = { __typename?: 'Query', getAllL
 
 export type MovieInfoFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType };
 
+export type MovieDetailsFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType, movieComment: Array<{ __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likeCount: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } }> };
+
 export type GetAllMoviesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllMoviesQuery = { __typename?: 'Query', getAllMovies: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType }> };
+
+export type GetMovieByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetMovieByIdQuery = { __typename?: 'Query', getMovieById: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType, movieComment: Array<{ __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likeCount: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } }> } };
 
 export type CreateMovieMutationVariables = Exact<{
   movieInputCreate: MovieInputCreate;
@@ -188,6 +200,8 @@ export type DeleteMovieMutationVariables = Exact<{
 
 export type DeleteMovieMutation = { __typename?: 'Mutation', deleteMovie: number };
 
+export type UserInfoFragment = { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string };
+
 export const MovieInfoFragmentDoc = gql`
     fragment MovieInfo on Movie {
   id
@@ -199,6 +213,34 @@ export const MovieInfoFragmentDoc = gql`
   isSelected @client
 }
     `;
+export const UserInfoFragmentDoc = gql`
+    fragment UserInfo on User {
+  id
+  createdAt
+  description
+  username
+}
+    `;
+export const MovieCommentInfoFragmentDoc = gql`
+    fragment MovieCommentInfo on MovieComment {
+  id
+  createdAt
+  description
+  likeCount
+  user {
+    ...UserInfo
+  }
+}
+    ${UserInfoFragmentDoc}`;
+export const MovieDetailsFragmentDoc = gql`
+    fragment MovieDetails on Movie {
+  ...MovieInfo
+  movieComment {
+    ...MovieCommentInfo
+  }
+}
+    ${MovieInfoFragmentDoc}
+${MovieCommentInfoFragmentDoc}`;
 export const GetAllLocalMoviesDocument = gql`
     query GetAllLocalMovies {
   getAllLocalMovies @client {
@@ -248,6 +290,24 @@ export const GetAllMoviesDocument = gql`
   })
   export class GetAllMoviesGQL extends Apollo.Query<GetAllMoviesQuery, GetAllMoviesQueryVariables> {
     override document = GetAllMoviesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetMovieByIdDocument = gql`
+    query getMovieById($id: Int!) {
+  getMovieById(id: $id) {
+    ...MovieDetails
+  }
+}
+    ${MovieDetailsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetMovieByIdGQL extends Apollo.Query<GetMovieByIdQuery, GetMovieByIdQueryVariables> {
+    override document = GetMovieByIdDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

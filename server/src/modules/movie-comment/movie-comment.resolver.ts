@@ -15,15 +15,21 @@ export class MovieCommentResolver {
 		private userService: UserService
 	) {}
 
+	@Mutation(() => MovieComment)
+	async createMovieComment(@Args('movieCommentInput') movieCommentInput: MovieCommentInput): Promise<MovieComment> {
+		return this.movieCommentService.createMovieComment(movieCommentInput);
+	}
+
 	@ResolveField('likedBy', () => [MovieCommentLike])
 	async getCommentLikedBy(@Parent() movieComment: MovieComment) {
 		const { id } = movieComment;
 		return this.movieCommentLikeService.getAllMovieCommetLikeByMovieCommentId(id);
 	}
 
-	@Mutation(() => MovieComment)
-	async createMovieComment(@Args('movieCommentInput') movieCommentInput: MovieCommentInput): Promise<MovieComment> {
-		return this.movieCommentService.createMovieComment(movieCommentInput);
+	@ResolveField('likeCount', () => Number)
+	async getCommentLikedCount(@Parent() movieComment: MovieComment) {
+		const { id } = movieComment;
+		return this.movieCommentLikeService.getCommentLikedCount(id);
 	}
 
 	@ResolveField('user', () => User)

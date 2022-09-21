@@ -12,6 +12,8 @@ import {
 	GetAllMoviesDocument,
 	GetAllMoviesGQL,
 	GetAllMoviesQuery,
+	GetMovieByIdGQL,
+	MovieDetailsFragment,
 	MovieInfoFragment,
 	MovieInputCreate,
 	MovieInputEdit,
@@ -24,6 +26,7 @@ import {
 export class MovieApiService {
 	constructor(
 		private getAllMoviesGQL: GetAllMoviesGQL,
+		private getMovieByIdGQL: GetMovieByIdGQL,
 		private createMovieGQL: CreateMovieGQL,
 		private editMovieGQL: EditMovieGQL,
 		private deleteMovieGQL: DeleteMovieGQL,
@@ -35,6 +38,14 @@ export class MovieApiService {
 			map((res) => res.data.getAllMovies ?? []),
 			map((movies) => movies.slice().reverse())
 		);
+	}
+
+	getMovieById({ id }: MovieInfoFragment): Observable<MovieDetailsFragment> {
+		return this.getMovieByIdGQL
+			.watch({
+				id,
+			})
+			.valueChanges.pipe(map((res) => res.data.getMovieById));
 	}
 
 	createMovie({ title, description }: MovieInputCreate): Observable<FetchResult<CreateMovieMutation>> {

@@ -14,6 +14,14 @@ export class MovieCommentLikeService {
 		});
 	}
 
+	async getCommentLikedCount(movieCommentId: number): Promise<number> {
+		return this.prisma.movieCommentLike.count({
+			where: {
+				movieCommentId,
+			},
+		});
+	}
+
 	async getAllMovieCommetLikeByUserId(userId: number): Promise<MovieCommentLike[]> {
 		return this.prisma.movieCommentLike.findMany({
 			where: {

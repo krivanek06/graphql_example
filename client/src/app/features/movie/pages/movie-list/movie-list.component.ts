@@ -73,9 +73,9 @@ export class MovieListComponent implements OnInit {
 		this.movieLocalService.onToggleSelectMovie(movie, isSelected);
 	}
 
-	onMovieShowDetails(movieInfoFragment: MovieInfoFragment): void {
+	onMovieShowDetails(movieInfo: MovieInfoFragment): void {
 		this.dialog.open(MovieDetailDialogComponent, {
-			data: { movieInfoFragment },
+			data: { movieInfo },
 			maxWidth: '100vw',
 			minWidth: '60vw',
 		});
