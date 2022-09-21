@@ -4,6 +4,7 @@ fragment MovieInfo on Movie {
 	updatedAt
 	title
 	description
+	movieCommentCount
 	isSelected @client
 }
 

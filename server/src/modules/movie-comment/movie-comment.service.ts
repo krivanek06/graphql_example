@@ -7,6 +7,14 @@ import { MovieComment } from './movie-comment.model';
 export class MovieCommentService {
 	constructor(private prisma: PrismaService) {}
 
+	async getMovieCommetsCountByMovieId(movieId: number): Promise<number> {
+		return this.prisma.movieComment.count({
+			where: {
+				movieId,
+			},
+		});
+	}
+
 	async getAllMovieCommetsByMovieId(movieId: number): Promise<MovieComment[]> {
 		return this.prisma.movieComment.findMany({
 			where: {

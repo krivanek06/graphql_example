@@ -167,6 +167,7 @@ export class MovieLocalService {
 			description,
 			createdAt: rightNow.toISOString(),
 			updatedAt: rightNow.toISOString(),
+			movieCommentCount: 0,
 			isSelected: MovieSelectType.Unselected,
 		};
 		return movie;

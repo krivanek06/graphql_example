@@ -8,7 +8,7 @@
 <div class="wrapper-grid">
 	<!-- movies persisted on the backend -->
 	<div class="wrapper-movie">
-		<h3>Movies persisted on the backend</h3>
+		<h3>Backend data</h3>
 		<app-movie-card
 			*ngFor="let movieInfo of moviesFromServer$ | async"
 			[movieInfo]="movieInfo"
@@ -20,7 +20,7 @@
 
 	<!-- Persited movie localy in reactive variables -->
 	<div class="wrapper-movie">
-		<h3>Persited movie localy in reactive variables</h3>
+		<h3>Reactive variables</h3>
 		<app-movie-card
 			*ngFor="let movieInfo of moviesFromReactiveVariables$ | async"
 			[movieInfo]="movieInfo"
@@ -32,7 +32,7 @@
 
 	<!-- Persisted movie locally in Apollo Cache -->
 	<div class="wrapper-movie">
-		<h3>Persited movie locally in Apollo Cache</h3>
+		<h3>Apollo client Cache</h3>
 		<app-movie-card
 			*ngFor="let movieInfo of moviesFromApolloCache$ | async"
 			[movieInfo]="movieInfo"

@@ -54,6 +54,7 @@ export class MovieApiService {
 						updatedAt: new Date().toISOString(),
 						title: title,
 						description: description,
+						movieCommentCount: 0,
 						isSelected: MovieSelectType.Unselected,
 					},
 				},
