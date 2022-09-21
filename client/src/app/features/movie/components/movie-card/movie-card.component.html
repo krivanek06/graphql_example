@@ -9,6 +9,7 @@
 				<!-- select / unselect -->
 				<button
 					*ngIf="showSelectMovie"
+					matTooltip="Mark comment"
 					mat-icon-button
 					(click)="onSelectChange(movieInfo.isSelected === MovieSelectType.Unselected)"
 				>
@@ -16,12 +17,17 @@
 				</button>
 
 				<!-- edit -->
-				<button mat-icon-button (click)="onToggleEdit()" color="primary">
+				<button mat-icon-button (click)="onToggleEdit()" color="primary" matTooltip="Edit movie">
 					<mat-icon>edit</mat-icon>
 				</button>
 
+				<!-- show details -->
+				<button mat-icon-button color="primary" (click)="onShowDetails()" matTooltip="show details">
+					<mat-icon>feed</mat-icon>
+				</button>
+
 				<!-- delete -->
-				<button mat-icon-button (click)="onDeleteMovie()" color="accent">
+				<button mat-icon-button (click)="onDeleteMovie()" color="accent" matTooltip="Remove movie">
 					<mat-icon>delete</mat-icon>
 				</button>
 			</div>

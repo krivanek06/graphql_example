@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom, Observable } from 'rxjs';
 import { MovieApiService } from 'src/app/core/api/movie-api.service';
+import { MovieDetailDialogComponent } from 'src/app/features/movie-detail/dialogs/movie-detail-dialog/movie-detail-dialog.component';
 import { MovieInfoFragment, MovieInputEdit } from 'src/app/graphql/graphql-custom-backend.service';
 import { MovieForm } from '../../models/movie.model';
 import { MovieLocalService } from '../../services/movie-local.service';
@@ -14,7 +16,11 @@ export class MovieListComponent implements OnInit {
 	moviesFromServer$!: Observable<MovieInfoFragment[]>;
 	moviesFromReactiveVariables$!: Observable<MovieInfoFragment[]>;
 	moviesFromApolloCache$!: Observable<MovieInfoFragment[]>;
-	constructor(private movieApiService: MovieApiService, private movieLocalService: MovieLocalService) {}
+	constructor(
+		private movieApiService: MovieApiService,
+		private movieLocalService: MovieLocalService,
+		private dialog: MatDialog
+	) {}
 
 	ngOnInit(): void {
 		this.moviesFromServer$ = this.movieApiService.getAllMovies();
@@ -65,5 +71,13 @@ export class MovieListComponent implements OnInit {
 	/* Additional functionality */
 	onToggleSelectMovie(movie: MovieInfoFragment, isSelected: boolean): void {
 		this.movieLocalService.onToggleSelectMovie(movie, isSelected);
+	}
+
+	onMovieShowDetails(movieInfoFragment: MovieInfoFragment): void {
+		this.dialog.open(MovieDetailDialogComponent, {
+			data: { movieInfoFragment },
+			maxWidth: '100vw',
+			minWidth: '60vw',
+		});
 	}
 }

@@ -11,6 +11,7 @@ export class MovieCardComponent implements OnInit {
 	@Output() toggleSelectMovie: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Output() editMovie: EventEmitter<MovieInputEdit> = new EventEmitter<MovieInputEdit>();
 	@Output() deleteMovie: EventEmitter<number> = new EventEmitter<number>();
+	@Output() showDetails: EventEmitter<MovieInfoFragment> = new EventEmitter<MovieInfoFragment>();
 
 	@Input() movieInfo!: MovieInfoFragment;
 	@Input() showSelectMovie = true;
@@ -60,5 +61,9 @@ export class MovieCardComponent implements OnInit {
 
 	onSelectChange(inSelected: boolean): void {
 		this.toggleSelectMovie.emit(inSelected);
+	}
+
+	onShowDetails(): void {
+		this.showDetails.emit(this.movieInfo);
 	}
 }
