@@ -5,23 +5,26 @@
 			<!-- title -->
 			<span>[{{movieInfo.id}}] {{ movieInfo.title }}</span>
 
-			<!-- select -->
-			<button
-				mat-icon-button
-				*ngIf="showSelectMovie && movieInfo.isSelected === MovieSelectType.Unselected"
-				(click)="onSelectChange(true)"
-			>
-				<mat-icon>star_border</mat-icon>
-			</button>
+			<div class="icon-wrapper">
+				<!-- select / unselect -->
+				<button
+					*ngIf="showSelectMovie"
+					mat-icon-button
+					(click)="onSelectChange(movieInfo.isSelected === MovieSelectType.Unselected)"
+				>
+					<mat-icon>{{ movieInfo.isSelected === MovieSelectType.Unselected ? 'star_border' : 'star' }}</mat-icon>
+				</button>
 
-			<!-- unselect -->
-			<button
-				mat-icon-button
-				*ngIf="showSelectMovie && movieInfo.isSelected === MovieSelectType.Selected"
-				(click)="onSelectChange(false)"
-			>
-				<mat-icon>star</mat-icon>
-			</button>
+				<!-- edit -->
+				<button mat-icon-button (click)="onToggleEdit()" color="primary">
+					<mat-icon>edit</mat-icon>
+				</button>
+
+				<!-- delete -->
+				<button mat-icon-button (click)="onDeleteMovie()" color="accent">
+					<mat-icon>delete</mat-icon>
+				</button>
+			</div>
 		</mat-card-title>
 
 		<!-- subtitles -->
@@ -54,17 +57,8 @@
 	</mat-card-content>
 
 	<!-- action buttons -->
-	<mat-card-actions>
-		<!-- no editing buttons -->
-		<ng-container *ngIf="!editing">
-			<button mat-stroked-button color="primary" (click)="onToggleEdit()">Edit</button>
-			<button mat-flat-button color="warn" (click)="onDeleteMovie()">Delete</button>
-		</ng-container>
-
-		<!-- edit buttons -->
-		<ng-container *ngIf="editing">
-			<button mat-flat-button color="primary" (click)="onSubmit()">Save</button>
-			<button mat-stroked-button (click)="onToggleEdit()">Cancel</button>
-		</ng-container>
+	<mat-card-actions *ngIf="editing">
+		<button mat-flat-button color="primary" (click)="onSubmit()">Save</button>
+		<button mat-stroked-button (click)="onToggleEdit()">Cancel</button>
 	</mat-card-actions>
 </mat-card>
