@@ -97,37 +97,7 @@ const createManyCommentsOnMovies = async () => {
 			await prisma.movieComment.create({
 				data: {
 					...comment,
-				},
-			});
-		}
-	}
-};
-
-const createManyCommentLikesOnComments = async () => {
-	if ((await prisma.movieCommentLike.count()) !== 0) {
-		return;
-	}
-
-	const allUsers = await prisma.user.findMany();
-	const allComments = await prisma.movieComment.findMany();
-
-	for await (const comment of allComments) {
-		const randomLoop = getRandomInt(2, 5);
-		// add N likes to each comment
-		for (let i = 0; i < randomLoop; i++) {
-			const randomUserId = getRandomInt(0, allUsers.length - 1);
-			const user = allUsers[randomUserId];
-
-			// create model
-			const commentLike: MovieCommentLikeInput = {
-				userId: user.id,
-				movieCommentId: comment.id,
-			};
-
-			// insert model into DB
-			await prisma.movieCommentLike.create({
-				data: {
-					...commentLike,
+					likes: getRandomInt(2, 8),
 				},
 			});
 		}
@@ -148,10 +118,6 @@ const run = async () => {
 		console.log('createManyCommentsOnMovies() -> start');
 		await createManyCommentsOnMovies();
 		console.log('createManyCommentsOnMovies() -> done');
-
-		console.log('createManyCommentLikesOnComments() -> start');
-		await createManyCommentLikesOnComments();
-		console.log('createManyCommentLikesOnComments() -> done');
 	} finally {
 		await prisma.$disconnect();
 	}

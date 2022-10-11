@@ -24,10 +24,8 @@ model Movie {
 model MovieComment {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
-  description String?  @default("")
-
-  // user who liked the comment
-  likedBy MovieCommentLike[]
+  description String?  @default("") // some description to a movie
+  likes       Int // how many people liked the movie
 
   // movie which was commented - cascade on delete
   Movie   Movie? @relation(fields: [movieId], references: [id], onDelete: Cascade)
@@ -38,25 +36,11 @@ model MovieComment {
   userId Int
 }
 
-model MovieCommentLike {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-
-  // user who liked the comment
-  User   User? @relation(fields: [userId], references: [id])
-  userId Int?
-
-  // comment that was liked - cascade on delete
-  MovieComment   MovieComment? @relation(fields: [movieCommentId], references: [id], onDelete: Cascade)
-  movieCommentId Int?
-}
-
 model User {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   description String?  @default("")
   username    String
 
-  MovieComment     MovieComment[]
-  MovieCommentLike MovieCommentLike[]
+  MovieComment MovieComment[]
 }

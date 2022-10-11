@@ -37,6 +37,7 @@ export class MovieCommentService {
 				movieId: movieCommentInput.movieId,
 				userId: movieCommentInput.userId,
 				description: movieCommentInput.description,
+				likes: 0,
 			},
 		});
 	}
