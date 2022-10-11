@@ -2,7 +2,7 @@ fragment MovieCommentInfo on MovieComment {
 	id
 	createdAt
 	description
-	likeCount
+	likes
 	user {
 		...UserInfo
 	}

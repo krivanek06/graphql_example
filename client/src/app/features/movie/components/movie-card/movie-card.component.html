@@ -22,7 +22,7 @@
 				</button>
 
 				<!-- show details -->
-				<button mat-icon-button color="primary" (click)="onShowDetails()" matTooltip="show details">
+				<button *ngIf="showMovieDetailButton" mat-icon-button color="primary" (click)="onShowDetails()" matTooltip="show details">
 					<mat-icon>feed</mat-icon>
 				</button>
 

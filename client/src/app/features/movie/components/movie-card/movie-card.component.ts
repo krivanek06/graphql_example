@@ -15,6 +15,7 @@ export class MovieCardComponent implements OnInit {
 
 	@Input() movieInfo!: MovieInfoFragment;
 	@Input() showSelectMovie = true;
+	@Input() showMovieDetailButton = true;
 
 	protected readonly form: FormGroup = this.fb.nonNullable.group({
 		title: ['', [Validators.required]],

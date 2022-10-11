@@ -24,6 +24,7 @@
 			<app-movie-card
 				*ngFor="let movieInfo of moviesFromApolloCache$ | async"
 				[movieInfo]="movieInfo"
+				[showMovieDetailButton]="false"
 				(deleteMovie)="onMovieDeleteToApolloCache($event)"
 				(editMovie)="onMovieEditToApolloCache($event)"
 				(toggleSelectMovie)="onToggleSelectMovie(movieInfo, $event)"
@@ -37,6 +38,7 @@
 				*ngFor="let movieInfo of moviesFromReactiveVariables$ | async"
 				[movieInfo]="movieInfo"
 				[showSelectMovie]="false"
+				[showMovieDetailButton]="false"
 				(deleteMovie)="onMovieDeleteToReactiveVariables($event)"
 				(editMovie)="onMovieEditToReactiveVariables($event)"
 			></app-movie-card>

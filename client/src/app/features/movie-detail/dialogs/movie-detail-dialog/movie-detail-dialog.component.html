@@ -1,4 +1,42 @@
 <ng-container *ngIf="movieDetails$ | async as movieDetails">
 	<h1 mat-dialog-title>[{{movieDetails.id}}] {{ movieDetails.title }}</h1>
-	<div mat-dialog-content>My favorite animal is {{ movieDetails.title }}</div>
+	<mat-divider></mat-divider>
+
+	<div mat-dialog-content>
+		<h2>Total comments: {{ movieDetails.movieCommentCount }}</h2>
+
+		<!-- add comment form -->
+		<mat-form-field appearance="outline">
+			<mat-label>Comment to a movie</mat-label>
+			<textarea matInput [formControl]="commentControl"></textarea>
+			<mat-hint>Write your comment into the box</mat-hint>
+			<mat-error>Your comment cannot be empty </mat-error>
+		</mat-form-field>
+		<div class="comment-submit-section">
+			<button mat-stroked-button color="primary" (click)="onCommentSubmit()">Add comment</button>
+		</div>
+
+		<div style="margin-bottom: 16px">
+			<mat-divider></mat-divider>
+		</div>
+
+		<!-- movie comment box -->
+		<div class="movie_comment_wrapper" *ngFor="let comment of movieDetails.movieComment">
+			<!-- header info -->
+			<div class="movie_comment_wrapper_header">
+				<span>{{ comment.user.username }}</span>
+				<span>{{ comment.createdAt | date: 'HH:mm dd.MM.YYYY' }}</span>
+
+				<!-- received likes on a comment -->
+				<div class="movie_comment_wrapper_header_badge">
+					<button mat-icon-button (click)="onLikeClick()">
+						<mat-icon [matBadge]="comment.likes" matBadgeSize="medium">thumb_up</mat-icon>
+					</button>
+				</div>
+			</div>
+
+			<!-- body info -->
+			<div class="movie_comment_wrapper_body">{{comment.description}}</div>
+		</div>
+	</div>
 </ng-container>

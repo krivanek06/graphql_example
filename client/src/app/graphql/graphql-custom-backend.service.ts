@@ -35,8 +35,8 @@ export type MovieComment = {
   /** Comment that was added */
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
-  likeCount: Scalars['Float'];
-  likedBy: Array<MovieCommentLike>;
+  /** How many likes a Movie has */
+  likes: Scalars['Float'];
   movieId: Scalars['Float'];
   user: User;
   userId: Scalars['Float'];
@@ -49,18 +49,6 @@ export type MovieCommentInput = {
   movieId: Scalars['Float'];
   /** User who wrote the comment */
   userId: Scalars['Float'];
-};
-
-export type MovieCommentLike = {
-  __typename?: 'MovieCommentLike';
-  createdAt: Scalars['String'];
-  id: Scalars['Int'];
-  movieComment: MovieComment;
-  /** Comment that was liked */
-  movieCommentId: Scalars['Int'];
-  user: User;
-  /** User who liked the comment */
-  userId: Scalars['Int'];
 };
 
 export type MovieInputCreate = {
@@ -147,11 +135,10 @@ export type User = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   movieCommentsUserLeft: Array<MovieComment>;
-  movieCommentsUserLiked: Array<MovieCommentLike>;
   username: Scalars['String'];
 };
 
-export type MovieCommentInfoFragment = { __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likeCount: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } };
+export type MovieCommentInfoFragment = { __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likes: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } };
 
 export type GetAllLocalMoviesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -165,7 +152,7 @@ export type GetAllLocalMoviesReactiveVarsQuery = { __typename?: 'Query', getAllL
 
 export type MovieInfoFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType };
 
-export type MovieDetailsFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType, movieComment: Array<{ __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likeCount: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } }> };
+export type MovieDetailsFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType, movieComment: Array<{ __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likes: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } }> };
 
 export type GetAllMoviesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -177,7 +164,7 @@ export type GetMovieByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetMovieByIdQuery = { __typename?: 'Query', getMovieById: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType, movieComment: Array<{ __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likeCount: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } }> } };
+export type GetMovieByIdQuery = { __typename?: 'Query', getMovieById: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType, movieComment: Array<{ __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likes: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } }> } };
 
 export type CreateMovieMutationVariables = Exact<{
   movieInputCreate: MovieInputCreate;
@@ -226,7 +213,7 @@ export const MovieCommentInfoFragmentDoc = gql`
   id
   createdAt
   description
-  likeCount
+  likes
   user {
     ...UserInfo
   }
