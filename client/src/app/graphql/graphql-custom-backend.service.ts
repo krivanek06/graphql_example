@@ -23,6 +23,7 @@ export type Movie = {
   id: Scalars['Int'];
   isSelected: MovieSelectType;
   movieComment: Array<MovieComment>;
+  movieCommentCount: Scalars['Float'];
   /** User's title to the movie */
   title: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -34,7 +35,8 @@ export type MovieComment = {
   /** Comment that was added */
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
-  likedBy: Array<MovieCommentLike>;
+  /** How many likes a Movie has */
+  likes: Scalars['Float'];
   movieId: Scalars['Float'];
   user: User;
   userId: Scalars['Float'];
@@ -47,18 +49,6 @@ export type MovieCommentInput = {
   movieId: Scalars['Float'];
   /** User who wrote the comment */
   userId: Scalars['Float'];
-};
-
-export type MovieCommentLike = {
-  __typename?: 'MovieCommentLike';
-  createdAt: Scalars['String'];
-  id: Scalars['Int'];
-  movieComment: MovieComment;
-  /** Comment that was liked */
-  movieCommentId: Scalars['Int'];
-  user: User;
-  /** User who liked the comment */
-  userId: Scalars['Int'];
 };
 
 export type MovieInputCreate = {
@@ -145,40 +135,50 @@ export type User = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   movieCommentsUserLeft: Array<MovieComment>;
-  movieCommentsUserLiked: Array<MovieCommentLike>;
   username: Scalars['String'];
 };
+
+export type MovieCommentInfoFragment = { __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likes: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } };
 
 export type GetAllLocalMoviesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllLocalMoviesQuery = { __typename?: 'Query', getAllLocalMovies: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType }> };
+export type GetAllLocalMoviesQuery = { __typename?: 'Query', getAllLocalMovies: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType }> };
 
 export type GetAllLocalMoviesReactiveVarsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllLocalMoviesReactiveVarsQuery = { __typename?: 'Query', getAllLocalMoviesReactiveVars: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType }> };
+export type GetAllLocalMoviesReactiveVarsQuery = { __typename?: 'Query', getAllLocalMoviesReactiveVars: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType }> };
 
-export type MovieInfoFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType };
+export type MovieInfoFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType };
+
+export type MovieDetailsFragment = { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType, movieComment: Array<{ __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likes: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } }> };
 
 export type GetAllMoviesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllMoviesQuery = { __typename?: 'Query', getAllMovies: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType }> };
+export type GetAllMoviesQuery = { __typename?: 'Query', getAllMovies: Array<{ __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType }> };
+
+export type GetMovieByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetMovieByIdQuery = { __typename?: 'Query', getMovieById: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType, movieComment: Array<{ __typename?: 'MovieComment', id: number, createdAt: string, description?: string | null, likes: number, user: { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string } }> } };
 
 export type CreateMovieMutationVariables = Exact<{
   movieInputCreate: MovieInputCreate;
 }>;
 
 
-export type CreateMovieMutation = { __typename?: 'Mutation', createMovie: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType } };
+export type CreateMovieMutation = { __typename?: 'Mutation', createMovie: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType } };
 
 export type EditMovieMutationVariables = Exact<{
   movieInputEdit: MovieInputEdit;
 }>;
 
 
-export type EditMovieMutation = { __typename?: 'Mutation', editMovie: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, isSelected: MovieSelectType } };
+export type EditMovieMutation = { __typename?: 'Mutation', editMovie: { __typename?: 'Movie', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null, movieCommentCount: number, isSelected: MovieSelectType } };
 
 export type DeleteMovieMutationVariables = Exact<{
   movieId: Scalars['Int'];
@@ -187,6 +187,8 @@ export type DeleteMovieMutationVariables = Exact<{
 
 export type DeleteMovieMutation = { __typename?: 'Mutation', deleteMovie: number };
 
+export type UserInfoFragment = { __typename?: 'User', id: number, createdAt: string, description?: string | null, username: string };
+
 export const MovieInfoFragmentDoc = gql`
     fragment MovieInfo on Movie {
   id
@@ -194,9 +196,38 @@ export const MovieInfoFragmentDoc = gql`
   updatedAt
   title
   description
+  movieCommentCount
   isSelected @client
 }
     `;
+export const UserInfoFragmentDoc = gql`
+    fragment UserInfo on User {
+  id
+  createdAt
+  description
+  username
+}
+    `;
+export const MovieCommentInfoFragmentDoc = gql`
+    fragment MovieCommentInfo on MovieComment {
+  id
+  createdAt
+  description
+  likes
+  user {
+    ...UserInfo
+  }
+}
+    ${UserInfoFragmentDoc}`;
+export const MovieDetailsFragmentDoc = gql`
+    fragment MovieDetails on Movie {
+  ...MovieInfo
+  movieComment {
+    ...MovieCommentInfo
+  }
+}
+    ${MovieInfoFragmentDoc}
+${MovieCommentInfoFragmentDoc}`;
 export const GetAllLocalMoviesDocument = gql`
     query GetAllLocalMovies {
   getAllLocalMovies @client {
@@ -246,6 +277,24 @@ export const GetAllMoviesDocument = gql`
   })
   export class GetAllMoviesGQL extends Apollo.Query<GetAllMoviesQuery, GetAllMoviesQueryVariables> {
     override document = GetAllMoviesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetMovieByIdDocument = gql`
+    query getMovieById($id: Int!) {
+  getMovieById(id: $id) {
+    ...MovieDetails
+  }
+}
+    ${MovieDetailsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetMovieByIdGQL extends Apollo.Query<GetMovieByIdQuery, GetMovieByIdQueryVariables> {
+    override document = GetMovieByIdDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

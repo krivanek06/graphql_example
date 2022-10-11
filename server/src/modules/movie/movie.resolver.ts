@@ -32,6 +32,8 @@ export class MovieResolver {
 		return this.movieService.getMovieById(id);
 	}
 
+	/* ******************** */
+
 	@Mutation(() => Movie)
 	async createMovie(@Args('movieInputCreate') movieInputCreate: MovieInputCreate): Promise<Movie> {
 		const createdMovie = await this.movieService.createMovie(movieInputCreate);
@@ -54,6 +56,8 @@ export class MovieResolver {
 		return movieId;
 	}
 
+	/* ******************** */
+
 	@Subscription(() => Movie)
 	createdMovie() {
 		return this.pubSub.asyncIterator('createdMovie');
@@ -69,9 +73,17 @@ export class MovieResolver {
 		return this.pubSub.asyncIterator('deletedMovie');
 	}
 
+	/* ******************** */
+
 	@ResolveField('movieComment', () => [MovieComment])
 	async getMovieComment(@Parent() movie: Movie) {
 		const { id } = movie;
 		return this.movieCommentService.getAllMovieCommetsByMovieId(id);
+	}
+
+	@ResolveField('movieCommentCount', () => Number)
+	async getMovieCommetsCountByMovieId(@Parent() movie: Movie) {
+		const { id } = movie;
+		return this.movieCommentService.getMovieCommetsCountByMovieId(id);
 	}
 }

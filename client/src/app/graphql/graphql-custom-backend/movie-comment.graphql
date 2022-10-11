@@ -1,0 +1,9 @@
+fragment MovieCommentInfo on MovieComment {
+	id
+	createdAt
+	description
+	likes
+	user {
+		...UserInfo
+	}
+}

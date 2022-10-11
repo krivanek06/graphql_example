@@ -1,0 +1,44 @@
+:host {
+	.movie_comment_wrapper {
+		padding: 8px;
+		border-radius: 8px;
+		border: 1px solid #c3c3c3;
+		margin-bottom: 4px;
+
+		&_header {
+			display: flex;
+			flex-flow: wrap;
+			gap: 16px;
+			position: relative;
+			font-weight: 600;
+			margin-bottom: 4px;
+
+			&_badge {
+				position: absolute;
+				right: 4px;
+				top: -5px;
+			}
+		}
+
+		&_body {
+			padding: 6px 16px;
+			background-color: #ededed;
+			border-radius: 8px;
+		}
+	}
+
+	mat-form-field {
+		width: 100%;
+	}
+
+	.comments_total {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.comment-submit-section {
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 12px;
+	}
+}

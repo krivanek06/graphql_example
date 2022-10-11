@@ -4,12 +4,26 @@ fragment MovieInfo on Movie {
 	updatedAt
 	title
 	description
+	movieCommentCount
 	isSelected @client
+}
+
+fragment MovieDetails on Movie {
+	...MovieInfo
+	movieComment {
+		...MovieCommentInfo
+	}
 }
 
 query GetAllMovies {
 	getAllMovies {
 		...MovieInfo
+	}
+}
+
+query getMovieById($id: Int!) {
+	getMovieById(id: $id) {
+		...MovieDetails
 	}
 }
 

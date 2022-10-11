@@ -15,8 +15,6 @@ export type Scalars = {
   Float: number;
   Date: any;
   ObjectID: any;
-  timestamptz: any;
-  uuid: any;
 };
 
 export type Address = {
@@ -447,33 +445,6 @@ export type MissionsFind = {
   payload_id?: InputMaybe<Scalars['String']>;
 };
 
-export type Mutation = {
-  __typename?: 'Mutation';
-  /** delete data from the table: "users" */
-  delete_users?: Maybe<Users_Mutation_Response>;
-  /** insert data into the table: "users" */
-  insert_users?: Maybe<Users_Mutation_Response>;
-  /** update data of the table: "users" */
-  update_users?: Maybe<Users_Mutation_Response>;
-};
-
-
-export type MutationDelete_UsersArgs = {
-  where: Users_Bool_Exp;
-};
-
-
-export type MutationInsert_UsersArgs = {
-  objects: Array<Users_Insert_Input>;
-  on_conflict?: InputMaybe<Users_On_Conflict>;
-};
-
-
-export type MutationUpdate_UsersArgs = {
-  _set?: InputMaybe<Users_Set_Input>;
-  where: Users_Bool_Exp;
-};
-
 export type Payload = {
   __typename?: 'Payload';
   customers?: Maybe<Array<Maybe<Scalars['String']>>>;
@@ -571,12 +542,6 @@ export type Query = {
   ship?: Maybe<Ship>;
   ships?: Maybe<Array<Maybe<Ship>>>;
   shipsResult?: Maybe<ShipsResult>;
-  /** fetch data from the table: "users" */
-  users: Array<Users>;
-  /** fetch aggregated fields from the table: "users" */
-  users_aggregate: Users_Aggregate;
-  /** fetch data from the table: "users" using primary key columns */
-  users_by_pk?: Maybe<Users>;
 };
 
 
@@ -823,29 +788,6 @@ export type QueryShipsResultArgs = {
   sort?: InputMaybe<Scalars['String']>;
 };
 
-
-export type QueryUsersArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
-};
-
-
-export type QueryUsers_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
-};
-
-
-export type QueryUsers_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
 export type Result = {
   __typename?: 'Result';
   totalCount?: Maybe<Scalars['Int']>;
@@ -1039,285 +981,10 @@ export type ShipsResult = {
   result?: Maybe<Result>;
 };
 
-/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
-export type String_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['String']>;
-  _gt?: InputMaybe<Scalars['String']>;
-  _gte?: InputMaybe<Scalars['String']>;
-  _ilike?: InputMaybe<Scalars['String']>;
-  _in?: InputMaybe<Array<Scalars['String']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _like?: InputMaybe<Scalars['String']>;
-  _lt?: InputMaybe<Scalars['String']>;
-  _lte?: InputMaybe<Scalars['String']>;
-  _neq?: InputMaybe<Scalars['String']>;
-  _nilike?: InputMaybe<Scalars['String']>;
-  _nin?: InputMaybe<Array<Scalars['String']>>;
-  _nlike?: InputMaybe<Scalars['String']>;
-  _nsimilar?: InputMaybe<Scalars['String']>;
-  _similar?: InputMaybe<Scalars['String']>;
-};
-
-export type Subscription = {
-  __typename?: 'Subscription';
-  /** fetch data from the table: "users" */
-  users: Array<Users>;
-  /** fetch aggregated fields from the table: "users" */
-  users_aggregate: Users_Aggregate;
-  /** fetch data from the table: "users" using primary key columns */
-  users_by_pk?: Maybe<Users>;
-};
-
-
-export type SubscriptionUsersArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
-};
-
-
-export type SubscriptionUsers_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
-};
-
-
-export type SubscriptionUsers_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
 export type Volume = {
   __typename?: 'Volume';
   cubic_feet?: Maybe<Scalars['Int']>;
   cubic_meters?: Maybe<Scalars['Int']>;
-};
-
-/** conflict action */
-export enum Conflict_Action {
-  /** ignore the insert on this row */
-  Ignore = 'ignore',
-  /** update the row with the given values */
-  Update = 'update'
-}
-
-/** column ordering options */
-export enum Order_By {
-  /** in the ascending order, nulls last */
-  Asc = 'asc',
-  /** in the ascending order, nulls first */
-  AscNullsFirst = 'asc_nulls_first',
-  /** in the ascending order, nulls last */
-  AscNullsLast = 'asc_nulls_last',
-  /** in the descending order, nulls first */
-  Desc = 'desc',
-  /** in the descending order, nulls first */
-  DescNullsFirst = 'desc_nulls_first',
-  /** in the descending order, nulls last */
-  DescNullsLast = 'desc_nulls_last'
-}
-
-/** expression to compare columns of type timestamptz. All fields are combined with logical 'AND'. */
-export type Timestamptz_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['timestamptz']>;
-  _gt?: InputMaybe<Scalars['timestamptz']>;
-  _gte?: InputMaybe<Scalars['timestamptz']>;
-  _in?: InputMaybe<Array<Scalars['timestamptz']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['timestamptz']>;
-  _lte?: InputMaybe<Scalars['timestamptz']>;
-  _neq?: InputMaybe<Scalars['timestamptz']>;
-  _nin?: InputMaybe<Array<Scalars['timestamptz']>>;
-};
-
-/** columns and relationships of "users" */
-export type Users = {
-  __typename?: 'users';
-  id: Scalars['uuid'];
-  name?: Maybe<Scalars['String']>;
-  rocket?: Maybe<Scalars['String']>;
-  timestamp: Scalars['timestamptz'];
-  twitter?: Maybe<Scalars['String']>;
-};
-
-/** aggregated selection of "users" */
-export type Users_Aggregate = {
-  __typename?: 'users_aggregate';
-  aggregate?: Maybe<Users_Aggregate_Fields>;
-  nodes: Array<Users>;
-};
-
-/** aggregate fields of "users" */
-export type Users_Aggregate_Fields = {
-  __typename?: 'users_aggregate_fields';
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Users_Max_Fields>;
-  min?: Maybe<Users_Min_Fields>;
-};
-
-
-/** aggregate fields of "users" */
-export type Users_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Users_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "users" */
-export type Users_Aggregate_Order_By = {
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<Users_Max_Order_By>;
-  min?: InputMaybe<Users_Min_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "users" */
-export type Users_Arr_Rel_Insert_Input = {
-  data: Array<Users_Insert_Input>;
-  on_conflict?: InputMaybe<Users_On_Conflict>;
-};
-
-/** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
-export type Users_Bool_Exp = {
-  _and?: InputMaybe<Array<InputMaybe<Users_Bool_Exp>>>;
-  _not?: InputMaybe<Users_Bool_Exp>;
-  _or?: InputMaybe<Array<InputMaybe<Users_Bool_Exp>>>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  name?: InputMaybe<String_Comparison_Exp>;
-  rocket?: InputMaybe<String_Comparison_Exp>;
-  timestamp?: InputMaybe<Timestamptz_Comparison_Exp>;
-  twitter?: InputMaybe<String_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "users" */
-export enum Users_Constraint {
-  /** unique or primary key constraint */
-  UsersPkey = 'users_pkey'
-}
-
-/** input type for inserting data into table "users" */
-export type Users_Insert_Input = {
-  id?: InputMaybe<Scalars['uuid']>;
-  name?: InputMaybe<Scalars['String']>;
-  rocket?: InputMaybe<Scalars['String']>;
-  timestamp?: InputMaybe<Scalars['timestamptz']>;
-  twitter?: InputMaybe<Scalars['String']>;
-};
-
-/** aggregate max on columns */
-export type Users_Max_Fields = {
-  __typename?: 'users_max_fields';
-  name?: Maybe<Scalars['String']>;
-  rocket?: Maybe<Scalars['String']>;
-  timestamp?: Maybe<Scalars['timestamptz']>;
-  twitter?: Maybe<Scalars['String']>;
-};
-
-/** order by max() on columns of table "users" */
-export type Users_Max_Order_By = {
-  name?: InputMaybe<Order_By>;
-  rocket?: InputMaybe<Order_By>;
-  timestamp?: InputMaybe<Order_By>;
-  twitter?: InputMaybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Users_Min_Fields = {
-  __typename?: 'users_min_fields';
-  name?: Maybe<Scalars['String']>;
-  rocket?: Maybe<Scalars['String']>;
-  timestamp?: Maybe<Scalars['timestamptz']>;
-  twitter?: Maybe<Scalars['String']>;
-};
-
-/** order by min() on columns of table "users" */
-export type Users_Min_Order_By = {
-  name?: InputMaybe<Order_By>;
-  rocket?: InputMaybe<Order_By>;
-  timestamp?: InputMaybe<Order_By>;
-  twitter?: InputMaybe<Order_By>;
-};
-
-/** response of any mutation on the table "users" */
-export type Users_Mutation_Response = {
-  __typename?: 'users_mutation_response';
-  /** number of affected rows by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
-  returning: Array<Users>;
-};
-
-/** input type for inserting object relation for remote table "users" */
-export type Users_Obj_Rel_Insert_Input = {
-  data: Users_Insert_Input;
-  on_conflict?: InputMaybe<Users_On_Conflict>;
-};
-
-/** on conflict condition type for table "users" */
-export type Users_On_Conflict = {
-  constraint: Users_Constraint;
-  update_columns: Array<Users_Update_Column>;
-};
-
-/** ordering options when selecting data from "users" */
-export type Users_Order_By = {
-  id?: InputMaybe<Order_By>;
-  name?: InputMaybe<Order_By>;
-  rocket?: InputMaybe<Order_By>;
-  timestamp?: InputMaybe<Order_By>;
-  twitter?: InputMaybe<Order_By>;
-};
-
-/** select columns of table "users" */
-export enum Users_Select_Column {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  Rocket = 'rocket',
-  /** column name */
-  Timestamp = 'timestamp',
-  /** column name */
-  Twitter = 'twitter'
-}
-
-/** input type for updating data in table "users" */
-export type Users_Set_Input = {
-  id?: InputMaybe<Scalars['uuid']>;
-  name?: InputMaybe<Scalars['String']>;
-  rocket?: InputMaybe<Scalars['String']>;
-  timestamp?: InputMaybe<Scalars['timestamptz']>;
-  twitter?: InputMaybe<Scalars['String']>;
-};
-
-/** update columns of table "users" */
-export enum Users_Update_Column {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  Rocket = 'rocket',
-  /** column name */
-  Timestamp = 'timestamp',
-  /** column name */
-  Twitter = 'twitter'
-}
-
-/** expression to compare columns of type uuid. All fields are combined with logical 'AND'. */
-export type Uuid_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['uuid']>;
-  _gt?: InputMaybe<Scalars['uuid']>;
-  _gte?: InputMaybe<Scalars['uuid']>;
-  _in?: InputMaybe<Array<Scalars['uuid']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['uuid']>;
-  _lte?: InputMaybe<Scalars['uuid']>;
-  _neq?: InputMaybe<Scalars['uuid']>;
-  _nin?: InputMaybe<Array<Scalars['uuid']>>;
 };
 
 export type LaunchLastFragment = { __typename?: 'Launch', mission_name?: string | null, launch_date_local?: any | null, launch_site?: { __typename?: 'LaunchSite', site_id?: string | null, site_name_long?: string | null, site_name?: string | null } | null, links?: { __typename?: 'LaunchLinks', video_link?: string | null, article_link?: string | null } | null };

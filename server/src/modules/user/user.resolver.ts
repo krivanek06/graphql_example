@@ -1,6 +1,4 @@
 import { Args, Int, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { MovieCommentLike } from '../movie-comment-like/movie-comment-like.model';
-import { MovieCommentLikeService } from '../movie-comment-like/movie-comment-like.service';
 import { MovieComment } from '../movie-comment/movie-comment.model';
 import { MovieCommentService } from '../movie-comment/movie-comment.service';
 import { User } from './user.model';
@@ -8,11 +6,7 @@ import { UserService } from './user.service';
 
 @Resolver(() => User)
 export class UserResolver {
-	constructor(
-		private movieCommentService: MovieCommentService,
-		private movieCommentLikeService: MovieCommentLikeService,
-		private userService: UserService
-	) {}
+	constructor(private movieCommentService: MovieCommentService, private userService: UserService) {}
 
 	@Query(() => User)
 	async getUserById(@Args('id', { type: () => Int }) id: number): Promise<User> {
@@ -28,11 +22,5 @@ export class UserResolver {
 	async getMovieCommentsThatUserWritten(@Parent() user: User): Promise<MovieComment[]> {
 		const { id } = user;
 		return this.movieCommentService.getAllMovieCommentsByUserId(id);
-	}
-
-	@ResolveField('movieCommentsUserLiked', () => [MovieCommentLike])
-	async getUserThatLikedTheComment(@Parent() user: User): Promise<MovieCommentLike[]> {
-		const { id } = user;
-		return this.movieCommentLikeService.getAllMovieCommetLikeByUserId(id);
 	}
 }

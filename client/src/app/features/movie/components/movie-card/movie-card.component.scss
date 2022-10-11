@@ -11,13 +11,27 @@
 				mat-icon {
 					cursor: pointer;
 				}
+
+				.icon-wrapper {
+					display: flex;
+					flex-flow: column;
+					position: absolute;
+					right: 10px;
+					top: 0;
+				}
 			}
 
 			mat-card-subtitle {
 				display: flex;
-				gap: 16px;
+				flex-flow: column;
+				gap: 4px;
 			}
 		}
+	}
+
+	mat-card-content {
+		margin-bottom: 0;
+		width: calc(100% - 40px);
 	}
 
 	mat-form-field {

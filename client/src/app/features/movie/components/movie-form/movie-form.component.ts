@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MovieInputCreate } from 'src/app/graphql/graphql-custom-backend.service';
 import { MovieForm, PersistOptionType } from '../../models/movie.model';
@@ -10,7 +10,6 @@ import { MovieForm, PersistOptionType } from '../../models/movie.model';
 })
 export class MovieFormComponent implements OnInit {
 	@Output() addMovie: EventEmitter<MovieForm> = new EventEmitter<MovieForm>();
-	@Input() title: string = '';
 
 	protected readonly form: FormGroup = this.fb.nonNullable.group({
 		title: ['', [Validators.required]],

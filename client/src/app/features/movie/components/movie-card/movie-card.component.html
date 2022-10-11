@@ -5,30 +5,39 @@
 			<!-- title -->
 			<span>[{{movieInfo.id}}] {{ movieInfo.title }}</span>
 
-			<!-- select -->
-			<button
-				mat-icon-button
-				*ngIf="showSelectMovie && movieInfo.isSelected === MovieSelectType.Unselected"
-				(click)="onSelectChange(true)"
-			>
-				<mat-icon>star_border</mat-icon>
-			</button>
+			<div class="icon-wrapper">
+				<!-- select / unselect -->
+				<button
+					*ngIf="showSelectMovie"
+					matTooltip="Mark comment"
+					mat-icon-button
+					(click)="onSelectChange(movieInfo.isSelected === MovieSelectType.Unselected)"
+				>
+					<mat-icon>{{ movieInfo.isSelected === MovieSelectType.Unselected ? 'star_border' : 'star' }}</mat-icon>
+				</button>
 
-			<!-- unselect -->
-			<button
-				mat-icon-button
-				*ngIf="showSelectMovie && movieInfo.isSelected === MovieSelectType.Selected"
-				(click)="onSelectChange(false)"
-			>
-				<mat-icon>star</mat-icon>
-			</button>
+				<!-- edit -->
+				<button mat-icon-button (click)="onToggleEdit()" color="primary" matTooltip="Edit movie">
+					<mat-icon>edit</mat-icon>
+				</button>
+
+				<!-- show details -->
+				<button *ngIf="showMovieDetailButton" mat-icon-button color="primary" (click)="onShowDetails()" matTooltip="show details">
+					<mat-icon>feed</mat-icon>
+				</button>
+
+				<!-- delete -->
+				<button mat-icon-button (click)="onDeleteMovie()" color="accent" matTooltip="Remove movie">
+					<mat-icon>delete</mat-icon>
+				</button>
+			</div>
 		</mat-card-title>
 
 		<!-- subtitles -->
 		<mat-card-subtitle>
 			<span>Created at: {{ movieInfo.createdAt | date: 'HH:mm:ss, dd.MM.YYYY'}}</span>
-			<span>|</span>
 			<span>Upated at: {{ movieInfo.updatedAt | date: 'HH:mm:ss, dd.MM.YYYY'}}</span>
+			<span>Total comments: {{ movieInfo.movieCommentCount }}</span>
 		</mat-card-subtitle>
 	</mat-card-header>
 
@@ -54,17 +63,8 @@
 	</mat-card-content>
 
 	<!-- action buttons -->
-	<mat-card-actions>
-		<!-- no editing buttons -->
-		<ng-container *ngIf="!editing">
-			<button mat-stroked-button color="primary" (click)="onToggleEdit()">Edit</button>
-			<button mat-flat-button color="warn" (click)="onDeleteMovie()">Delete</button>
-		</ng-container>
-
-		<!-- edit buttons -->
-		<ng-container *ngIf="editing">
-			<button mat-flat-button color="primary" (click)="onSubmit()">Save</button>
-			<button mat-stroked-button (click)="onToggleEdit()">Cancel</button>
-		</ng-container>
+	<mat-card-actions *ngIf="editing">
+		<button mat-flat-button color="primary" (click)="onSubmit()">Save</button>
+		<button mat-stroked-button (click)="onToggleEdit()">Cancel</button>
 	</mat-card-actions>
 </mat-card>

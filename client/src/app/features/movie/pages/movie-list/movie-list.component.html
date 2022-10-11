@@ -1,44 +1,47 @@
 <!-- show create movie form -->
-<div>
-	<app-movie-form (addMovie)="onMovieAdd($event)"></app-movie-form>
-</div>
+<app-movie-form (addMovie)="onMovieAdd($event)"></app-movie-form>
 
 <!-- list movies -->
 <h1>Movie list</h1>
 <div class="wrapper-grid">
 	<!-- movies persisted on the backend -->
 	<div class="wrapper-movie">
-		<h3>Movies persisted on the backend</h3>
+		<h3>Backend data</h3>
 		<app-movie-card
 			*ngFor="let movieInfo of moviesFromServer$ | async"
 			[movieInfo]="movieInfo"
+			(showDetails)="onMovieShowDetails($event)"
 			(deleteMovie)="onMovieDeleteToServer($event)"
 			(editMovie)="onEditMovieToServer($event)"
 			(toggleSelectMovie)="onToggleSelectMovie(movieInfo, $event)"
 		></app-movie-card>
 	</div>
 
-	<!-- Persited movie localy in reactive variables -->
 	<div class="wrapper-movie">
-		<h3>Persited movie localy in reactive variables</h3>
-		<app-movie-card
-			*ngFor="let movieInfo of moviesFromReactiveVariables$ | async"
-			[movieInfo]="movieInfo"
-			[showSelectMovie]="false"
-			(deleteMovie)="onMovieDeleteToReactiveVariables($event)"
-			(editMovie)="onMovieEditToReactiveVariables($event)"
-		></app-movie-card>
-	</div>
+		<!-- Persisted movie locally in Apollo Cache -->
+		<div class="wrapper-movie">
+			<h3>Local: Apollo client Cache</h3>
+			<app-movie-card
+				*ngFor="let movieInfo of moviesFromApolloCache$ | async"
+				[movieInfo]="movieInfo"
+				[showMovieDetailButton]="false"
+				(deleteMovie)="onMovieDeleteToApolloCache($event)"
+				(editMovie)="onMovieEditToApolloCache($event)"
+				(toggleSelectMovie)="onToggleSelectMovie(movieInfo, $event)"
+			></app-movie-card>
+		</div>
 
-	<!-- Persisted movie locally in Apollo Cache -->
-	<div class="wrapper-movie">
-		<h3>Persited movie locally in Apollo Cache</h3>
-		<app-movie-card
-			*ngFor="let movieInfo of moviesFromApolloCache$ | async"
-			[movieInfo]="movieInfo"
-			(deleteMovie)="onMovieDeleteToApolloCache($event)"
-			(editMovie)="onMovieEditToApolloCache($event)"
-			(toggleSelectMovie)="onToggleSelectMovie(movieInfo, $event)"
-		></app-movie-card>
+		<!-- Persited movie localy in reactive variables -->
+		<div class="wrapper-movie">
+			<h3>Local: Reactive variables</h3>
+			<app-movie-card
+				*ngFor="let movieInfo of moviesFromReactiveVariables$ | async"
+				[movieInfo]="movieInfo"
+				[showSelectMovie]="false"
+				[showMovieDetailButton]="false"
+				(deleteMovie)="onMovieDeleteToReactiveVariables($event)"
+				(editMovie)="onMovieEditToReactiveVariables($event)"
+			></app-movie-card>
+		</div>
 	</div>
 </div>

@@ -16,6 +16,11 @@ export class MovieComment implements MovieCommentClient {
 	})
 	description: string;
 
+	@Field(() => Number, {
+		description: 'How many likes a Movie has',
+	})
+	likes: number;
+
 	@Field(() => Number)
 	movieId: number;
 
